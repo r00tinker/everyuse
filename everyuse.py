@@ -51,7 +51,6 @@ if os.getuid() != 0:
 print('[\33[36m*\033[0;0m] Importando módulos do programa.')
 time.sleep(0.5)
 try:
-    import modulos
     from modulos import moduloengsocialzeroum
     from modulos import moduloscannerzeroum
     from modulos import modulobruteforcezeroum
@@ -362,7 +361,7 @@ def hashlinux():
                 except EOFError:
                     sairprograma()
             try:
-                modulos.modulocriptografiazeroum.senhaslinux(hashalvo, wl)  # Execute o programa
+                modulocriptografiazeroum.senhaslinux(hashalvo, wl)  # Execute o programa
             except KeyboardInterrupt:
                 continue
             except UnboundLocalError:
@@ -502,7 +501,7 @@ def hashsall(tipodehash):
                 except EOFError:
                     sairprograma()
             try:
-                modulos.modulocriptografiazeroum.hashs(hashalvo, tipodehash, wl)  # Execute o programa
+                modulocriptografiazeroum.hashs(hashalvo, tipodehash, wl)  # Execute o programa
             except KeyboardInterrupt:
                 continue
             except UnboundLocalError:
@@ -1116,11 +1115,11 @@ def base64ed():
                 break
             elif opt == '1':
                 cryptog = input(cryba + 'Palavra para criptografar: ')
-                modulos.modulocriptografiazeroum.cryptobase64(cryptog, 'encode')
+                modulocriptografiazeroum.cryptobase64(cryptog, 'encode')
                 complett()
             elif opt == '2':
                 cryptog = input(cryba + 'Palavra para descriptografar: ')
-                modulos.modulocriptografiazeroum.cryptobase64(cryptog, 'decode')
+                modulocriptografiazeroum.cryptobase64(cryptog, 'decode')
                 complett()
         except KeyboardInterrupt:
             sairmenu = True
