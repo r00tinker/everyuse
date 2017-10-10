@@ -177,10 +177,10 @@ def bruteftp():
             user = input(btftp + 'Usuario: ') #Usuario do FTP
             print("""  \033[1mSelecione uma opção:
 
-                \033[1m1)\033[0;0m Gerar uma wordlist
-                \033[1m2)\033[0;0m Usar uma wordlist
+        \033[1m1)\033[0;0m Gerar uma wordlist
+        \033[1m2)\033[0;0m Usar uma wordlist
 
-                \033[1m0)\033[0;0m Voltar
+        \033[1m0)\033[0;0m Voltar
                         """)
             opt = str(input(btftp)) #Qual é a opção?
             if opt == '0': #Sai do programa
@@ -300,10 +300,10 @@ def hashlinux():
             hashalvo = input(cryli + 'Hash: ')
             print("""  \033[1mSelecione uma opção:
 
-                    \033[1m1)\033[0;0m Gerar uma wordlist
-                    \033[1m2)\033[0;0m Usar uma wordlist
+        \033[1m1)\033[0;0m Gerar uma wordlist
+        \033[1m2)\033[0;0m Usar uma wordlist
 
-                    \033[1m0)\033[0;0m Voltar
+        \033[1m0)\033[0;0m Voltar
                             """)
             opt = str(input(cryli))  # Qual é a opção?
             if opt == '0':  # Sai do programa
@@ -440,10 +440,10 @@ def hashsall(tipodehash):
 
             print("""  \033[1mSelecione uma opção:
 
-                    \033[1m1)\033[0;0m Gerar uma wordlist
-                    \033[1m2)\033[0;0m Usar uma wordlist
+        \033[1m1)\033[0;0m Gerar uma wordlist
+        \033[1m2)\033[0;0m Usar uma wordlist
 
-                    \033[1m0)\033[0;0m Voltar
+        \033[1m0)\033[0;0m Voltar
                             """)
             opt = str(input(cryha+tipodehash+'\033[0;0m» '))  # Qual é a opção?
             if opt == '0':  # Sai do programa
@@ -535,10 +535,10 @@ def brutesubdom():
                 continue
             print("""  \033[1mSelecione uma opção:
 
-                \033[1m1)\033[0;0m Gerar uma wordlist
-                \033[1m2)\033[0;0m Usar uma wordlist
+        \033[1m1)\033[0;0m Gerar uma wordlist
+        \033[1m2)\033[0;0m Usar uma wordlist
 
-                \033[1m0)\033[0;0m Voltar
+        \033[1m0)\033[0;0m Voltar
                         """)
             opt = str(input(btsubd)) #Qual é a opção?
             if opt == '0': #Sai do programa
@@ -634,10 +634,10 @@ def brutedir():
                 continue
             print("""  \033[1mSelecione uma opção:
 
-                \033[1m1)\033[0;0m Gerar uma wordlist
-                \033[1m2)\033[0;0m Usar uma wordlist
+        \033[1m1)\033[0;0m Gerar uma wordlist
+        \033[1m2)\033[0;0m Usar uma wordlist
 
-                \033[1m0)\033[0;0m Voltar
+        \033[1m0)\033[0;0m Voltar
                         """)
             opt = str(input(btdir)) #Qual é a opção?
             if opt == '0': #Sai do programa
@@ -725,10 +725,10 @@ def brutegmail():
             alvo = input(btgma + 'Email do alvo: ') #Pegue o email do alvo
             print("""  \033[1mSelecione uma opção:
 
-                \033[1m1)\033[0;0m Gerar uma wordlist
-                \033[1m2)\033[0;0m Usar uma wordlist
+        \033[1m1)\033[0;0m Gerar uma wordlist
+        \033[1m2)\033[0;0m Usar uma wordlist
 
-                \033[1m0)\033[0;0m Voltar
+        \033[1m0)\033[0;0m Voltar
                         """)
             opt = str(input(btgma)) #Qual é a opção?
             if opt == 0: #Sai do programa
@@ -928,11 +928,11 @@ def enviaremail(servidor, porta):
             while sairmenu == False:
                 print("""  \033[1mSelecione um tipo de anexo:
     
-            \033[1m1)\033[0;0m Imagem
-            \033[1m2)\033[0;0m Audio (.MP3/.OGG)
-            \033[1m3)\033[0;0m Documento (.PDF/.DOCX)
+        \033[1m1)\033[0;0m Imagem
+        \033[1m2)\033[0;0m Audio (.MP3/.OGG)
+        \033[1m3)\033[0;0m Documento (.PDF/.DOCX)
     
-            \033[1m0)\033[0;0m Voltar
+        \033[1m0)\033[0;0m Voltar
                 """)
                 opx = str(input(cmevem))
                 if opx == '0':
@@ -1076,11 +1076,11 @@ def scanners():
             banner()
             print("""  \033[1mSelecione um scanner:
     
-            \033[1m1)\033[0;0m Porta
-            \033[1m2)\033[0;0m Whois
-            \033[1m3)\033[0;0m Hrefs
+        \033[1m1)\033[0;0m Porta
+        \033[1m2)\033[0;0m Whois
+        \033[1m3)\033[0;0m Hrefs
     
-            \033[1m0)\033[0;0m Voltar
+        \033[1m0)\033[0;0m Voltar
                 """)
             opt = str(input(cmscs))
             if opt == '0':
@@ -1105,10 +1105,10 @@ def base64ed():
             banner()
             print("""  \033[1mSelecione uma opção:
     
-            \033[1m1)\033[0;0m Encode
-            \033[1m2)\033[0;0m Decode
+        \033[1m1)\033[0;0m Encode
+        \033[1m2)\033[0;0m Decode
     
-            \033[1m0)\033[0;0m Voltar
+        \033[1m0)\033[0;0m Voltar
                 """)
             opt = str(input(cryba))
             if opt == '0':
@@ -1136,16 +1136,16 @@ def criptografia():
             banner()
             print("""  \033[1mSelecione uma opção:
 
-            \033[1m1)\033[0;0m Hash linux
-            \033[1m2)\033[0;0m MD5
-            \033[1m3)\033[0;0m SHA1
-            \033[1m4)\033[0;0m SHA224
-            \033[1m5)\033[0;0m SHA256
-            \033[1m6)\033[0;0m SHA384
-            \033[1m7)\033[0;0m SHA512
-            \033[1m8)\033[0;0m Base64
+        \033[1m1)\033[0;0m Hash linux
+        \033[1m2)\033[0;0m MD5
+        \033[1m3)\033[0;0m SHA1
+        \033[1m4)\033[0;0m SHA224
+        \033[1m5)\033[0;0m SHA256
+        \033[1m6)\033[0;0m SHA384
+        \033[1m7)\033[0;0m SHA512
+        \033[1m8)\033[0;0m Base64
             
-            \033[1m0)\033[0;0m Voltar
+        \033[1m0)\033[0;0m Voltar
                 """)
             opt = str(input(cmcry))
             if opt == '0':
@@ -1181,13 +1181,13 @@ def bruteforce():
             banner()
             print("""  \033[1mSelecione uma opção:
     
-            \033[1m1)\033[0;0m FTP
-            \033[1m2)\033[0;0m Gmail
-            \033[1m3)\033[0;0m Subdominio
-            \033[1m4)\033[0;0m Diretorio
-            \033[1m9)\033[0;0m Gerador de wordlist
+        \033[1m1)\033[0;0m FTP
+        \033[1m2)\033[0;0m Gmail
+        \033[1m3)\033[0;0m Subdominio
+        \033[1m4)\033[0;0m Diretorio
+        \033[1m9)\033[0;0m Gerador de wordlist
     
-            \033[1m0)\033[0;0m Voltar
+        \033[1m0)\033[0;0m Voltar
                 """)
             opt = str(input(cmbfs))
             if opt == '0':
