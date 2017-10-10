@@ -4,6 +4,9 @@
 #
 # Programa com finalidade de aprendizado.
 # Todas as suas ações utilizando o everyuse são responsabilidades SUA.
+
+#IMPORTAR O QUE É NECESSARIO
+print('[\33[36m*\033[0;0m] Importando bibliotecas padrões.')
 try:
     import os
     import smtplib
@@ -15,6 +18,7 @@ try:
     from socket import gaierror
     from datetime import datetime
     import requests
+    import time
 except ImportError:
     print('Erro ao importar as bibliotecas padroes do python.')
     exit(0)
@@ -30,16 +34,28 @@ def banner():
 \033[0;0m\033[1m888         Y88b d88P  888        8888888P"     888     \033[33m\033[1m888     888     "Y88b. 888        
 \033[0;0m\033[1m888          Y88o88P   888        888 T88b      888     \033[33m\033[1m888     888       "888 888        
 \033[0;0m\033[1m888           Y888P    888        888  T88b     888     \033[33m\033[1mY88b. .d88P Y88b  d88P 888        
-\033[0;0m\033[1m8888888888     Y8P     8888888888 888   T88b    888     \033[33m\033[1m"Y88888P"   "Y8888P"  8888888888
+\033[0;0m\033[1m8888888888     Y8P     8888888888 888   T88b    888     \033[33m\033[1m "Y88888P"   "Y8888P"  8888888888
 \033[0;0m\033[1m\033[31m                                        ᶠᶸᶜᵏ ˢᵒᶜᶤᵉᵗʸ\033[0;0m
     """)
 
+#Verificar se é root
+print('[\33[36m*\033[0;0m] Verificando se usuario é root.')
+time.sleep(0.5)
+if os.getuid() != 0:
+    print(' Tivemos um erro :c')
+    print(' Execute o programa como administrador')
+    print(' .: sudo ./everyuse')
+    exit()
+
 #Importar os modulos.
+print('[\33[36m*\033[0;0m] Importando módulos do programa.')
+time.sleep(0.5)
 try:
-    from modulos import enviodeemail
-    from modulos import scport
-    from modulos import wordlistgnt
-    from modulos import bfftp
+    import modulos
+    from modulos import moduloengsocialzeroum
+    from modulos import moduloscannerzeroum
+    from modulos import modulobruteforcezeroum
+    from modulos import modulocriptografiazeroum
 except ImportError:
     banner()
     print('Não conseguimos encontrar os módulos necessários para utilizar o programa.')
@@ -62,12 +78,21 @@ global cm
 #Definindo Cm
 cmevem = '\033[1m\033[33meveryuse\033[0;0m/\033[1m\033[33mengsocial\033[0;0m/\033[1m\033[33memails\033[0;0m» '
 cmptsc = '\033[1m\033[33meveryuse\033[0;0m/\033[1m\033[33mscanners\033[0;0m/\033[1m\033[33mportscan\033[0;0m» '
+cmwhois = '\033[1m\033[33meveryuse\033[0;0m/\033[1m\033[33mscanners\033[0;0m/\033[1m\033[33mwhois\033[0;0m» '
+cmhref = '\033[1m\033[33meveryuse\033[0;0m/\033[1m\033[33mscanners\033[0;0m/\033[1m\033[33mhrefscan\033[0;0m» '
 cmwl = '\033[1m\033[33meveryuse\033[0;0m/\033[1m\033[33mbruteforce\033[0;0m/\033[1m\033[33mwordlist\033[0;0m» '
 cmwlbc = '\033[1m\033[33meveryuse\033[0;0m/\033[1m\033[33mbruteforce\033[0;0m/\033[1m\033[33mwordlist\033[0;0m/\033[1m\033[33mbasica\033[0;0m» '
 cmegsc = '\033[1m\033[33meveryuse\033[0;0m/\033[1m\033[33mengsocial\033[0;0m» '
 cmscs = '\033[1m\033[33meveryuse\033[0;0m/\033[1m\033[33mscanners\033[0;0m» '
+cmcry = '\033[1m\033[33meveryuse\033[0;0m/\033[1m\033[33mcriptografia\033[0;0m» '
+cryli = '\033[1m\033[33meveryuse\033[0;0m/\033[1m\033[33mcriptografia\033[0;0m/\033[1m\033[33mhashlinux\033[0;0m» '
+cryba = '\033[1m\033[33meveryuse\033[0;0m/\033[1m\033[33mcriptografia\033[0;0m/\033[1m\033[33mbase64\033[0;0m» '
+cryha = '\033[1m\033[33meveryuse\033[0;0m/\033[1m\033[33mcriptografia\033[0;0m/\033[1m\033[33mhash'
 cmbfs = '\033[1m\033[33meveryuse\033[0;0m/\033[1m\033[33mbruteforce\033[0;0m» '
 btftp = '\033[1m\033[33meveryuse\033[0;0m/\033[1m\033[33mbruteforce\033[0;0m/\033[1m\033[33mftp\033[0;0m» '
+btgma = '\033[1m\033[33meveryuse\033[0;0m/\033[1m\033[33mbruteforce\033[0;0m/\033[1m\033[33mgmail\033[0;0m» '
+btsubd = '\033[1m\033[33meveryuse\033[0;0m/\033[1m\033[33mbruteforce\033[0;0m/\033[1m\033[33msubdominio\033[0;0m» '
+btdir = '\033[1m\033[33meveryuse\033[0;0m/\033[1m\033[33mbruteforce\033[0;0m/\033[1m\033[33mdiretorio\033[0;0m» '
 cm = '\033[1m\033[33meveryuse\033[0;0m» '
 
 #Mensagem ao sair do programa
@@ -83,21 +108,26 @@ def complett():
     print('\n\n     \033[0;0mAperte \033[1m\033[33m[ENTER]\033[0;0m para voltar.')
     input('')
 
+#Se a pasta .tmpup/ existir, significa que a pessoa fez uma atualização.
 if os.path.exists('.tmpup/'):
     banner()
-    print(' O everyuse foi atualizado com sucesso !')
+    print('[\33[36m*\033[0;0m] O everyuse foi atualizado com sucesso !')
     os.system('rm -rf .tmpup/')
     os.system('rm -rf updeve.sh')
     complett()
 
-if 'v0.5-08/09' not in verif.text:
+#Verificando se possui uma atualização disponivel
+print('[\33[36m*\033[0;0m] Verificando possiveis atualizações.')
+time.sleep(0.5)
+if 'v1.0-10/10' not in verif.text:
     ndatl = '(Versão nova disponivel.)'
 else:
     ndatl = ''
 
+#Função para atualizar o programa.
 def atualizacao():
     banner()
-    if 'v0.5-08/09' not in verif.text:
+    if 'v1.0-10/10' not in verif.text:
         print(verif.text)
         print(' Você precisa atualizar o everyuse!')
         sairmenu = False
@@ -108,42 +138,43 @@ def atualizacao():
                 os.system('wget -q https://raw.githubusercontent.com/r00tinker/everyuse/master/everyuse.py')
                 upmodulos = requests.get('https://raw.githubusercontent.com/r00tinker/everyuse/master/modulos/allrawupdate')
                 os.system('rm -rf modulos/*')
-                os.system('rm -rf modulos/')
-                os.system('mkdir modulos/')
                 os.system('mkdir .tmpup/')
                 for linha in upmodulos.text.split():
                     os.system('cd modulos/ && wget -q ' + linha)
                 os.system('echo "#!/bin/bash" > updeve.sh')
-                os.system('echo "rm -rf everyuse" >> updeve.sh')
-                os.system('echo "mv everyuse.py everyuse" >> updeve.sh')
-                os.system('echo "chmod +x everyuse" >> updeve.sh')
+                os.system('echo "sudo rm -rf everyuse" >> updeve.sh')
+                os.system('echo "sudo mv everyuse.py everyuse" >> updeve.sh')
+                os.system('echo "sudo chmod +x everyuse" >> updeve.sh')
                 os.system('echo "exit" >> updeve.sh')
-                os.system('chmod +x updeve.sh')
+                os.system('sudo chmod +x updeve.sh')
                 print(' Abra novamente o everyuse para concluir a atualização.')
                 complett()
                 os.system('./updeve.sh')
                 exit(0)
             elif sorn.lower() == 'n':
                 sairmenu = True
+            else:
+                continue
     else:
         print(verif.text)
         print(' Você não precisa atualizar o everyuse!')
         complett()
         sairmenu = True
+
 #########################################################################################################################
 #                                               BRUTE FORCE FTP                                                         #
 #########################################################################################################################
 def bruteftp():
     sairmenu = False
     while sairmenu == False:
-        try:
-            host = input(btftp + 'Alvo: ')
+        try: # Tente
+            host = input(btftp + 'Alvo: ') #Pegue o alvo
             try:
-                ip = socket.gethostbyname(host)
+                ip = socket.gethostbyname(host) #Verifique se existe
             except:
-                print('Site inválido.')
+                print('Site inválido.') #Se não existir, pergunte novamente o alvo
                 continue
-            user = input(btftp + 'Usuario: ')
+            user = input(btftp + 'Usuario: ') #Usuario do FTP
             print("""  \033[1mSelecione uma opção:
 
                 \033[1m1)\033[0;0m Gerar uma wordlist
@@ -151,12 +182,12 @@ def bruteftp():
 
                 \033[1m0)\033[0;0m Voltar
                         """)
-            opt = int(input(btftp))
-            if opt == 0:
+            opt = str(input(btftp)) #Qual é a opção?
+            if opt == '0': #Sai do programa
                 sairmenu = True
 
             # Gerar uma wordlist e selecionar ela
-            elif opt == 1:
+            elif opt == '1':
                 gerarwordlist()
                 print('Ex.: /home/user/Documentos/wordlist.txt')
                 f = False
@@ -183,7 +214,7 @@ def bruteftp():
                     sairprograma()
 
             # Selecionar uma wordlist
-            elif opt == 2:
+            elif opt == '2':
                 print('Ex.: /home/user/Documentos/wordlist.txt')
                 f = False
                 try:
@@ -209,7 +240,7 @@ def bruteftp():
                     sairprograma()
             print('')
             try:
-                bfftp.bruteforce(wl, user, ip)
+                modulobruteforcezeroum.ftp(wl, user, ip) #Execute o programa
             except KeyboardInterrupt:
                 continue
             except UnboundLocalError:
@@ -228,6 +259,553 @@ def bruteftp():
 #########################################################################################################################
 '''-------------------------------------------------------------------------------------------------------------------'''
 #########################################################################################################################
+#                                                   HREF SCAN                                                           #
+#########################################################################################################################
+def hrefscan():
+    sairmenu = False
+    while sairmenu == False:
+        try:
+            print(' Ex.: www.site.com.br')
+            alvo = input(cmhref + 'Alvo: ')
+            try:
+                ip = socket.gethostbyname(alvo)
+            except:
+                continue
+            try:
+                moduloscannerzeroum.href(alvo, ip)  # Execute o programa
+            except KeyboardInterrupt:
+                continue
+            except UnboundLocalError:
+                continue
+            except EOFError:
+                sairprograma()
+            complett()
+            sairmenu = True
+        except KeyboardInterrupt:
+            sairmenu = True
+            complett()
+        except EOFError:
+            sairprograma()
+#########################################################################################################################
+#                                                   HREF SCAN                                                           #
+#########################################################################################################################
+'''-------------------------------------------------------------------------------------------------------------------'''
+#########################################################################################################################
+#                                                  HASH LINUX                                                           #
+#########################################################################################################################
+def hashlinux():
+    sairmenu = False
+    while sairmenu == False:
+        try:
+            hashalvo = input(cryli + 'Hash: ')
+            print("""  \033[1mSelecione uma opção:
+
+                    \033[1m1)\033[0;0m Gerar uma wordlist
+                    \033[1m2)\033[0;0m Usar uma wordlist
+
+                    \033[1m0)\033[0;0m Voltar
+                            """)
+            opt = str(input(cryli))  # Qual é a opção?
+            if opt == '0':  # Sai do programa
+                sairmenu = True
+
+            # Gerar uma wordlist e selecionar ela
+            elif opt == '1':
+                gerarwordlist()
+                print('Ex.: /home/user/Documentos/wordlist.txt')
+                f = False
+                try:
+                    while f == False:
+                        try:
+                            wl = input(cryli + 'Wordlist: ')
+                            arq = open(wl)
+                            f = True
+                        except FileNotFoundError:
+                            continue
+                        except FileExistsError:
+                            continue
+                        except KeyboardInterrupt:
+                            sairmenu = True
+                            f = True
+                            complett()
+                        except EOFError:
+                            sairprograma()
+                except KeyboardInterrupt:
+                    sairmenu = True
+                    complett()
+                except EOFError:
+                    sairprograma()
+
+            # Selecionar uma wordlist
+            elif opt == '2':
+                print('Ex.: /home/user/Documentos/wordlist.txt')
+                f = False
+                try:
+                    while f == False:
+                        try:
+                            wl = input(cryli + 'Wordlist: ')
+                            arq = open(wl)
+                            f = True
+                        except FileNotFoundError:
+                            continue
+                        except FileExistsError:
+                            continue
+                        except KeyboardInterrupt:
+                            sairmenu = True
+                            f = True
+                            complett()
+                        except EOFError:
+                            sairprograma()
+                except KeyboardInterrupt:
+                    sairmenu = True
+                    complett()
+                except EOFError:
+                    sairprograma()
+            try:
+                modulos.modulocriptografiazeroum.senhaslinux(hashalvo, wl)  # Execute o programa
+            except KeyboardInterrupt:
+                continue
+            except UnboundLocalError:
+                continue
+            except EOFError:
+                sairprograma()
+            complett()
+            sairmenu = True
+        except KeyboardInterrupt:
+            sairmenu = True
+            complett()
+        except EOFError:
+            sairprograma()
+#########################################################################################################################
+#                                                  HASH LINUX                                                           #
+#########################################################################################################################
+'''-------------------------------------------------------------------------------------------------------------------'''
+#########################################################################################################################
+#                                                  HASHS ALL                                                            #
+#########################################################################################################################
+def whoistheserver():
+    sairmenu = False
+    while sairmenu == False:
+        try:
+            print(' Ex.: www.site.com.br')
+            alvo = input(cmwhois + 'Alvo: ')
+            try:
+                ip = socket.gethostbyname(alvo)
+            except:
+                continue
+            try:
+                moduloscannerzeroum.whois(alvo)  # Execute o programa
+            except KeyboardInterrupt:
+                continue
+            except UnboundLocalError:
+                continue
+            except EOFError:
+                sairprograma()
+            complett()
+            sairmenu = True
+        except KeyboardInterrupt:
+            sairmenu = True
+            complett()
+        except EOFError:
+            sairprograma()
+#########################################################################################################################
+#                                                  HASHS ALL                                                            #
+#########################################################################################################################
+#########################################################################################################################
+#                                                  HASHS ALL                                                            #
+#########################################################################################################################
+def hashsall(tipodehash):
+    sairmenu = False
+    while sairmenu == False:
+        try:
+            hashalvo = input(cryha+tipodehash+'\033[0;0m» ' + 'Hash '+tipodehash.upper()+': ')
+            if tipodehash == 'sha512' and len(hashalvo) != 128:
+                print(' Insira uma hash valida.')
+                continue
+            elif tipodehash == 'sha384' and len(hashalvo) != 96:
+                print(' Insira uma hash valida.')
+                continue
+            elif tipodehash == 'sha256' and len(hashalvo) != 64:
+                print(' Insira uma hash valida.')
+                continue
+            elif tipodehash == 'sha224' and len(hashalvo) != 56:
+                print(' Insira uma hash valida.')
+                continue
+            elif tipodehash == 'sha1' and len(hashalvo) != 40:
+                print(' Insira uma hash valida.')
+                continue
+            elif tipodehash == 'md5' and len(hashalvo) != 32:
+                print(' Insira uma hash valida.')
+                continue
+
+            print("""  \033[1mSelecione uma opção:
+
+                    \033[1m1)\033[0;0m Gerar uma wordlist
+                    \033[1m2)\033[0;0m Usar uma wordlist
+
+                    \033[1m0)\033[0;0m Voltar
+                            """)
+            opt = str(input(cryha+tipodehash+'\033[0;0m» '))  # Qual é a opção?
+            if opt == '0':  # Sai do programa
+                sairmenu = True
+
+            # Gerar uma wordlist e selecionar ela
+            elif opt == '1':
+                gerarwordlist()
+                print('Ex.: /home/user/Documentos/wordlist.txt')
+                f = False
+                try:
+                    while f == False:
+                        try:
+                            wl = input(cryha+tipodehash+'\033[0;0m» ' + 'Wordlist: ')
+                            arq = open(wl)
+                            f = True
+                        except FileNotFoundError:
+                            continue
+                        except FileExistsError:
+                            continue
+                        except KeyboardInterrupt:
+                            sairmenu = True
+                            f = True
+                            complett()
+                        except EOFError:
+                            sairprograma()
+                except KeyboardInterrupt:
+                    sairmenu = True
+                    complett()
+                except EOFError:
+                    sairprograma()
+
+            # Selecionar uma wordlist
+            elif opt == '2':
+                print('Ex.: /home/user/Documentos/wordlist.txt')
+                f = False
+                try:
+                    while f == False:
+                        try:
+                            wl = input(cryha+tipodehash+'\033[0;0m» ' + 'Wordlist: ')
+                            arq = open(wl)
+                            f = True
+                        except FileNotFoundError:
+                            continue
+                        except FileExistsError:
+                            continue
+                        except KeyboardInterrupt:
+                            sairmenu = True
+                            f = True
+                            complett()
+                        except EOFError:
+                            sairprograma()
+                except KeyboardInterrupt:
+                    sairmenu = True
+                    complett()
+                except EOFError:
+                    sairprograma()
+            try:
+                modulos.modulocriptografiazeroum.hashs(hashalvo, tipodehash, wl)  # Execute o programa
+            except KeyboardInterrupt:
+                continue
+            except UnboundLocalError:
+                continue
+            except EOFError:
+                sairprograma()
+            complett()
+            sairmenu = True
+        except KeyboardInterrupt:
+            sairmenu = True
+            complett()
+        except EOFError:
+            sairprograma()
+#########################################################################################################################
+#                                                  HASHS ALL                                                            #
+#########################################################################################################################
+'''-------------------------------------------------------------------------------------------------------------------'''
+#########################################################################################################################
+#                                             BRUTE FORCE SUBDOM                                                        #
+#########################################################################################################################
+def brutesubdom():
+    sairmenu = False
+    while sairmenu == False:
+        try:
+            print(btsubd + 'Ex.: site.com.br')
+            alvo = input(btsubd + 'Alvo: ')
+            try:
+               ip = socket.gethostbyname('www.'+alvo)
+            except:
+                continue
+            print("""  \033[1mSelecione uma opção:
+
+                \033[1m1)\033[0;0m Gerar uma wordlist
+                \033[1m2)\033[0;0m Usar uma wordlist
+
+                \033[1m0)\033[0;0m Voltar
+                        """)
+            opt = str(input(btsubd)) #Qual é a opção?
+            if opt == '0': #Sai do programa
+                sairmenu = True
+
+            # Gerar uma wordlist e selecionar ela
+            elif opt == '1':
+                gerarwordlist()
+                print('Ex.: /home/user/Documentos/wordlist.txt')
+                f = False
+                try:
+                    while f == False:
+                        try:
+                            wl = input(btsubd + 'Wordlist: ')
+                            arq = open(wl)
+                            f = True
+                        except FileNotFoundError:
+                            continue
+                        except FileExistsError:
+                            continue
+                        except KeyboardInterrupt:
+                            sairmenu = True
+                            f = True
+                            complett()
+                        except EOFError:
+                            sairprograma()
+                except KeyboardInterrupt:
+                    sairmenu = True
+                    complett()
+                except EOFError:
+                    sairprograma()
+
+            # Selecionar uma wordlist
+            elif opt == '2':
+                print('Ex.: /home/user/Documentos/wordlist.txt')
+                f = False
+                try:
+                    while f == False:
+                        try:
+                            wl = input(btsubd + 'Wordlist: ')
+                            arq = open(wl)
+                            f = True
+                        except FileNotFoundError:
+                            continue
+                        except FileExistsError:
+                            continue
+                        except KeyboardInterrupt:
+                            sairmenu = True
+                            f = True
+                            complett()
+                        except EOFError:
+                            sairprograma()
+                except KeyboardInterrupt:
+                    sairmenu = True
+                    complett()
+                except EOFError:
+                    sairprograma()
+            try:
+                modulobruteforcezeroum.subdominio(ip, alvo, wl)
+            except KeyboardInterrupt:
+                continue
+            except UnboundLocalError:
+                continue
+            except EOFError:
+                sairprograma()
+            complett()
+            sairmenu = True
+        except KeyboardInterrupt:
+            sairmenu = True
+            complett()
+        except EOFError:
+            sairprograma()
+
+#########################################################################################################################
+#                                             BRUTE FORCE SUBDOM                                                        #
+#########################################################################################################################
+'''-------------------------------------------------------------------------------------------------------------------'''
+#########################################################################################################################
+#                                             BRUTE FORCE DIR                                                           #
+#########################################################################################################################
+def brutedir():
+    sairmenu = False
+    while sairmenu == False:
+        try:
+            print(btdir + 'Ex.: http://www.site.com.br/')
+            alvo = input(btdir + 'Alvo: ')
+            try:
+                if alvo.endswith('/'):
+                    req = requests.get(alvo)
+                else:
+                    continue
+            except:
+                continue
+            print("""  \033[1mSelecione uma opção:
+
+                \033[1m1)\033[0;0m Gerar uma wordlist
+                \033[1m2)\033[0;0m Usar uma wordlist
+
+                \033[1m0)\033[0;0m Voltar
+                        """)
+            opt = str(input(btdir)) #Qual é a opção?
+            if opt == '0': #Sai do programa
+                sairmenu = True
+
+            # Gerar uma wordlist e selecionar ela
+            elif opt == '1':
+                gerarwordlist()
+                print('Ex.: /home/user/Documentos/wordlist.txt')
+                f = False
+                try:
+                    while f == False:
+                        try:
+                            wl = input(btdir + 'Wordlist: ')
+                            arq = open(wl)
+                            f = True
+                        except FileNotFoundError:
+                            continue
+                        except FileExistsError:
+                            continue
+                        except KeyboardInterrupt:
+                            sairmenu = True
+                            f = True
+                            complett()
+                        except EOFError:
+                            sairprograma()
+                except KeyboardInterrupt:
+                    sairmenu = True
+                    complett()
+                except EOFError:
+                    sairprograma()
+
+            # Selecionar uma wordlist
+            elif opt == '2':
+                print('Ex.: /home/user/Documentos/wordlist.txt')
+                f = False
+                try:
+                    while f == False:
+                        try:
+                            wl = input(btdir + 'Wordlist: ')
+                            arq = open(wl)
+                            f = True
+                        except FileNotFoundError:
+                            continue
+                        except FileExistsError:
+                            continue
+                        except KeyboardInterrupt:
+                            sairmenu = True
+                            f = True
+                            complett()
+                        except EOFError:
+                            sairprograma()
+                except KeyboardInterrupt:
+                    sairmenu = True
+                    complett()
+                except EOFError:
+                    sairprograma()
+            try:
+                modulobruteforcezeroum.diretorio(alvo, wl)
+            except KeyboardInterrupt:
+                continue
+            except UnboundLocalError:
+                continue
+            except EOFError:
+                sairprograma()
+            complett()
+            sairmenu = True
+        except KeyboardInterrupt:
+            sairmenu = True
+            complett()
+        except EOFError:
+            sairprograma()
+
+#########################################################################################################################
+#                                             BRUTE FORCE DIR                                                           #
+#########################################################################################################################
+'''-------------------------------------------------------------------------------------------------------------------'''
+#########################################################################################################################
+#                                               BRUTE FORCE GMAIL                                                       #
+#########################################################################################################################
+def brutegmail():
+    sairmenu = False
+    while sairmenu == False:
+        try:
+            alvo = input(btgma + 'Email do alvo: ') #Pegue o email do alvo
+            print("""  \033[1mSelecione uma opção:
+
+                \033[1m1)\033[0;0m Gerar uma wordlist
+                \033[1m2)\033[0;0m Usar uma wordlist
+
+                \033[1m0)\033[0;0m Voltar
+                        """)
+            opt = str(input(btgma)) #Qual é a opção?
+            if opt == 0: #Sai do programa
+                sairmenu = True
+
+            # Gerar uma wordlist e selecionar ela
+            elif opt == '1':
+                gerarwordlist()
+                print('Ex.: /home/user/Documentos/wordlist.txt')
+                f = False
+                try:
+                    while f == False:
+                        try:
+                            wl = input(btgma + 'Wordlist: ')
+                            arq = open(wl)
+                            f = True
+                        except FileNotFoundError:
+                            continue
+                        except FileExistsError:
+                            continue
+                        except KeyboardInterrupt:
+                            sairmenu = True
+                            f = True
+                            complett()
+                        except EOFError:
+                            sairprograma()
+                except KeyboardInterrupt:
+                    sairmenu = True
+                    complett()
+                except EOFError:
+                    sairprograma()
+
+            # Selecionar uma wordlist
+            elif opt == '2':
+                print('Ex.: /home/user/Documentos/wordlist.txt')
+                f = False
+                try:
+                    while f == False:
+                        try:
+                            wl = input(btgma + 'Wordlist: ')
+                            arq = open(wl)
+                            f = True
+                        except FileNotFoundError:
+                            continue
+                        except FileExistsError:
+                            continue
+                        except KeyboardInterrupt:
+                            sairmenu = True
+                            f = True
+                            complett()
+                        except EOFError:
+                            sairprograma()
+                except KeyboardInterrupt:
+                    sairmenu = True
+                    complett()
+                except EOFError:
+                    sairprograma()
+            try:
+                modulobruteforcezeroum.gmail(alvo, wl)
+            except KeyboardInterrupt:
+                continue
+            except UnboundLocalError:
+                continue
+            except EOFError:
+                sairprograma()
+            complett()
+            sairmenu = True
+        except KeyboardInterrupt:
+            sairmenu = True
+            complett()
+        except EOFError:
+            sairprograma()
+#########################################################################################################################
+#                                               BRUTE FORCE GMAIL                                                       #
+#########################################################################################################################
+'''-------------------------------------------------------------------------------------------------------------------'''
+#########################################################################################################################
 #                                         INICIO - GERAR WORDLIST BASIC                                                 #
 #########################################################################################################################
 def gerarumawlbasic():
@@ -238,7 +816,7 @@ def gerarumawlbasic():
         taman = int(input(cmwlbc + 'Quantidade de caracteres: '))
         nomearq = input(cmwlbc + 'Nome da wordlist: ')
         tmp = datetime.utcnow()
-        wordlistgnt.gerarwl(adicional, caracincl, taman, nomearq)
+        modulobruteforcezeroum.gerarwl(adicional, caracincl, taman, nomearq)
         tmpd = datetime.utcnow()
         print(' Wordlist gerada com sucesso!')
         print(' Tempo para gerar wordlist: ', tmpd - tmp)
@@ -277,10 +855,10 @@ def portpref():
     
         \033[1m0)\033[0;0m Voltar
                 """)
-            opt = int(input(cmptsc))
-            if opt == 0:
+            opt = str(input(cmptsc))
+            if opt == '0':
                 sairmenu = True
-            elif opt == 1 or opt == 2 or opt == 3:
+            elif opt == '1' or opt == '2' or opt == '3':
                 velo = 0
                 velocm = False
                 print(' Ex.: www.siteteste.com')
@@ -302,20 +880,20 @@ def portpref():
                     elif velo == '3':
                         velocidade = 5
                         velocm = True
-                if opt == 3:
+                if opt == '3':
                     cmc = int(input(cmptsc+'Porta inicio: '))
                     fip = int(input(cmptsc+'Porta final: '))
                     fi = fip + 1
-                    scport.scportespe(site, velocidade, range(cmc, fi))
+                    moduloscannerzeroum.portaespecificada(site, velocidade, range(cmc, fi))
                     complett()
-                if opt == 2:
+                if opt == '2':
                     print(' Separe as portas por virgulas e sem espaço.')
                     ports = str(input(cmptsc+'Portas: '))
                     portas = ports.split(',')
-                    scport.scportespe(site, velocidade, portas)
+                    moduloscannerzeroum.portaespecificada(site, velocidade, portas)
                     complett()
-                if opt == 1:
-                    scport.scport(site, 1, velocidade)
+                if opt == '1':
+                    moduloscannerzeroum.porta(site, 1, velocidade)
                     complett()
     except gaierror:
         print('\n O site informado esta incorreto')
@@ -327,7 +905,6 @@ def portpref():
         portpref()
     except EOFError:
         sairprograma()
-
 
 #########################################################################################################################
 #                                            FIM - MENU - PORT SCAN                                                     #
@@ -357,14 +934,14 @@ def enviaremail(servidor, porta):
     
             \033[1m0)\033[0;0m Voltar
                 """)
-                opx = int(input(cmevem))
-                if opx == 0:
+                opx = str(input(cmevem))
+                if opx == '0':
                     sairmenu = True
                     tipoanx = 0
                     nomearq = ''
                     anexar = 'sem'
                     break
-                elif opx == 1:
+                elif opx == '1':
                     print('Exemplo.: /home/user/Documentos/arquivo.png')
                     tipoanx = 1
                     anexar = str(input(cmevem + 'Arquivo: '))
@@ -373,7 +950,7 @@ def enviaremail(servidor, porta):
                         sairmenu = True
                     else:
                         print('Arquivo não encontrado.')
-                elif opx == 2:
+                elif opx == '2':
                     print('Exemplo.: /home/user/Documentos/arquivo.mp3')
                     tipoanx = 2
                     anexar = str(input(cmevem + 'Arquivo: '))
@@ -383,7 +960,7 @@ def enviaremail(servidor, porta):
                     else:
                         print(' Arquivo não encontrado.')
                         print(' Apenas arquivos .mp3 ou .ogg')
-                elif opx == 3:
+                elif opx == '3':
                     print('Exemplo.: /home/user/Documentos/arquivo.pdf')
                     tipoanx = 3
                     anexar = str(input(cmevem + 'Arquivo: '))
@@ -417,7 +994,7 @@ def enviaremail(servidor, porta):
         for email in para:
             print('\033[1m☞\033[0;0m' + email)
         try:
-            enviodeemail.envio(de, passw, nomeex, para, assunto, corpocom, servidor, porta, anexar, tipoanx, nomearq, qtd)
+            moduloengsocialzeroum.enviaremail(de, passw, nomeex, para, assunto, corpocom, servidor, porta, anexar, tipoanx, nomearq, qtd)
             print('\nTodos os emails foram enviados corretamente !')
             complett()
         except smtplib.SMTPAuthenticationError:
@@ -451,12 +1028,12 @@ def seuservidor():
     
         \033[1m0)\033[0;0m Voltar
             """)
-            opt = int(input(cmevem))
-            if opt == 0:
+            opt = str(input(cmevem))
+            if opt == '0':
                 sairmenu = True
-            elif opt == 1:
+            elif opt == '1':
                 enviaremail('smtp.gmail.com', 587)
-            elif opt == 2:
+            elif opt == '2':
                 enviaremail('smtp.live.com', 587)
     except KeyboardInterrupt:
         sairmenu = True
@@ -477,10 +1054,10 @@ def engenhariasocial():
     
         \033[1m0)\033[0;0m Voltar
             """)
-            opt = int(input(cmegsc))
-            if opt == 0:
+            opt = str(input(cmegsc))
+            if opt == '0':
                 sairmenu = True
-            elif opt == 1:
+            elif opt == '1':
                 seuservidor()
     except KeyboardInterrupt:
         sairmenu = True
@@ -500,20 +1077,101 @@ def scanners():
             print("""  \033[1mSelecione um scanner:
     
             \033[1m1)\033[0;0m Porta
+            \033[1m2)\033[0;0m Whois
+            \033[1m3)\033[0;0m Hrefs
     
             \033[1m0)\033[0;0m Voltar
                 """)
-            opt = int(input(cmscs))
-            if opt == 0:
+            opt = str(input(cmscs))
+            if opt == '0':
                 sairmenu = True
-            elif opt == 1:
+            elif opt == '1':
                 portpref()
+            elif opt == '2':
+                whoistheserver()
+            elif opt == '3':
+                hrefscan()
     except KeyboardInterrupt:
         sairmenu = True
     except ValueError:
         scanners()
     except EOFError:
         sairprograma()
+
+def base64ed():
+    sairmenu = False
+    while sairmenu == False:
+        try:
+            banner()
+            print("""  \033[1mSelecione uma opção:
+    
+            \033[1m1)\033[0;0m Encode
+            \033[1m2)\033[0;0m Decode
+    
+            \033[1m0)\033[0;0m Voltar
+                """)
+            opt = str(input(cryba))
+            if opt == '0':
+                sairmenu = True
+                break
+            elif opt == '1':
+                cryptog = input(cryba + 'Palavra para criptografar: ')
+                modulos.modulocriptografiazeroum.cryptobase64(cryptog, 'encode')
+                complett()
+            elif opt == '2':
+                cryptog = input(cryba + 'Palavra para descriptografar: ')
+                modulos.modulocriptografiazeroum.cryptobase64(cryptog, 'decode')
+                complett()
+        except KeyboardInterrupt:
+            sairmenu = True
+            complett()
+        except EOFError:
+            sairprograma()
+
+#Menu de criptografia
+def criptografia():
+    sairmenu = False
+    while sairmenu == False:
+        try:
+            banner()
+            print("""  \033[1mSelecione uma opção:
+
+            \033[1m1)\033[0;0m Hash linux
+            \033[1m2)\033[0;0m MD5
+            \033[1m3)\033[0;0m SHA1
+            \033[1m4)\033[0;0m SHA224
+            \033[1m5)\033[0;0m SHA256
+            \033[1m6)\033[0;0m SHA384
+            \033[1m7)\033[0;0m SHA512
+            \033[1m8)\033[0;0m Base64
+            
+            \033[1m0)\033[0;0m Voltar
+                """)
+            opt = str(input(cmcry))
+            if opt == '0':
+                sairmenu = True
+                break
+            elif opt == '1':
+                hashlinux()
+            elif opt == '2':
+                hashsall('md5')
+            elif opt == '3':
+                hashsall('sha1')
+            elif opt == '4':
+                hashsall('sha224')
+            elif opt == '5':
+                hashsall('sha256')
+            elif opt == '6':
+                hashsall('sha384')
+            elif opt == '7':
+                hashsall('sha512')
+            elif opt == '8':
+                base64ed()
+        except KeyboardInterrupt:
+            sairmenu = True
+            complett()
+        except EOFError:
+            sairprograma()
 
 #Menu de brute force
 def bruteforce():
@@ -524,18 +1182,27 @@ def bruteforce():
             print("""  \033[1mSelecione uma opção:
     
             \033[1m1)\033[0;0m FTP
+            \033[1m2)\033[0;0m Gmail
+            \033[1m3)\033[0;0m Subdominio
+            \033[1m4)\033[0;0m Diretorio
             \033[1m9)\033[0;0m Gerador de wordlist
     
             \033[1m0)\033[0;0m Voltar
                 """)
-            opt = int(input(cmbfs))
-            if opt == 0:
+            opt = str(input(cmbfs))
+            if opt == '0':
                 sairmenu = True
                 break
-            elif opt == 9:
+            elif opt == '9':
                 gerarwordlist()
-            elif opt == 1:
+            elif opt == '1':
                 bruteftp()
+            elif opt == '2':
+                brutegmail()
+            elif opt == '3':
+                brutesubdom()
+            elif opt == '4':
+                brutedir()
         except KeyboardInterrupt:
             sairmenu = True
             complett()
@@ -554,10 +1221,10 @@ def gerarwordlist():
     
         \033[1m0)\033[0;0m Voltar
                 """)
-            opt = int(input(cmwl))
-            if opt == 0:
+            opt = str(input(cmwl))
+            if opt == '0':
                 sairmenu = True
-            elif opt == 1:
+            elif opt == '1':
                 gerarumawlbasic()
         except KeyboardInterrupt:
             sairmenu = True
@@ -633,8 +1300,49 @@ def ajuda():
             \033[1m║    \033[0;0mO scanner vai verificar desde a porta de inicio até a porta de fim.
             \033[1m║    \033[31m   Uso: Inicio: 0\033[0;0m                                          
             \033[1m║    \033[31m   Uso: Fim: 2000\033[0;0m                                          
-            \033[1m╚════════════════════════════════════════════════════════════════════════\033[0;0m
-            \n""")
+            \033[1m║    \033[0;0m\n""")
+            print('    ╔═════════════════════════════════════════════════════════════════════════╗')
+            print('    ║ Aperte CRTL+C para sair da ajuda             Aperte ENTER para ler mais ║')
+            print('    ╚═════════════════════════════════════════════════════════════════════════╝')
+            input()
+            print("""
+            \033[1m╠══  \033[1m\033[31mWhoIS.\033[0;0m
+            \033[1m║    \033[0;0mO módulo whois, que significa em português: quem é? Foi criado 
+            \033[1m║    \033[0;0mpara pessoas saberem mais sobre o site. Ele retorna diversos
+            \033[1m║    \033[0;0mdados, tais como: CNPJ, DONO, EMAILS, DATA DE CRIAÇÃO...
+            \033[1m║    \033[0;0mUma vez que esses dados podem ajudar o atacante a descobrir
+            \033[1m║    \033[0;0mbastante sobre o seu alvo, foi colocado para não precisar usar
+            \033[1m║    \033[0;0mo whois tradicional, além de formatar melhor o texto e traduzir.
+            \033[1m║    \033[0;0mPara utilizar o módulo, basta acessar o menu scanners/whois e 
+            \033[1m║    \033[0;0mpreencher o campo necessario: o alvo.
+            \033[1m║    \033[31m    Uso: www.site.com.br\033[0;0m
+            \033[1m║    \033[0;0mÉ importante que o site digitado não tenha "/" nem "http://"
+            \033[1m║    \033[31m   Uso errado: https://www.site.com.br/\033[0;0m
+            \033[1m║    \033[0;0mEm poucos segundos ele ira retornar todas as informações
+            \033[1m║    \033[0;0m\n""")
+            print('    ╔═════════════════════════════════════════════════════════════════════════╗')
+            print('    ║ Aperte CRTL+C para sair da ajuda             Aperte ENTER para ler mais ║')
+            print('    ╚═════════════════════════════════════════════════════════════════════════╝')
+            input()
+            print("""
+            \033[1m╠══  \033[1m\033[31mHrefs.\033[0;0m
+            \033[1m║    \033[0;0mEste módulo foi criado para automatizar uma tarefa que é importante,
+            \033[1m║    \033[0;0ma capturação de sites que são referenciados por outro.
+            \033[1m║    \033[0;0mExemplo de um href em um html:
+            \033[1m║    \033[31m<a href="http://site.com.br/login.php ...."\033[0;0m
+            \033[1m║    \033[0;0mPensando no estilo da escrita, o programa procura por "a" e logo em
+            \033[1m║    \033[0;0mseguida, procura pelo link indicado pelo "href=".
+            \033[1m║    \033[0;0mVale ressaltar que isso possui alguns problemas, ele não consegue
+            \033[1m║    \033[0;0mcapturar alguns links que estão no site e acaba pegando alguns links
+            \033[1m║    \033[0;0mdo google, facebook, twitter, instagram, etc... que são desnecessarios
+            \033[1m║    \033[0;0mentão após a utilização, ele ira perguntar se você deseja visualizar
+            \033[1m║    \033[0;0mapenas os hrefs que são do site.
+            \033[1m║    \033[0;0mPara utilizar o módulo, basta acessar o menu scanners/hrefs e
+            \033[1m║    \033[0;0mpreencher o campo necessario.
+            \033[1m║    \033[31m   Uso: www.site.com.br\033[0;0m
+            \033[1m║    \033[0;0mÉ importante que o site digitado não tenha "/" nem "http://"
+            \033[1m║    \033[31m   Uso errado: https://www.site.com.br/\033[0;0m
+            \033[1m║    \033[0;0m\n""")
             print('    ╔═════════════════════════════════════════════════════════════════════════╗')
             print('    ║ Aperte CRTL+C para sair da ajuda             Aperte ENTER para ler mais ║')
             print('    ╚═════════════════════════════════════════════════════════════════════════╝')
@@ -664,6 +1372,75 @@ def ajuda():
             \033[1m║    \033[31m   Uso: /home/user/Documentos/wordlist.txt\033[0;0m
             \033[1m║    \033[0;0mApós isso, o programa já irá fazer o processo para tentar 
             \033[1m║    \033[0;0mdescobrir a senha do FTP.
+            \033[1m║    \033[0;0m\n""")
+            print('    ╔═════════════════════════════════════════════════════════════════════════╗')
+            print('    ║ Aperte CRTL+C para sair da ajuda             Aperte ENTER para ler mais ║')
+            print('    ╚═════════════════════════════════════════════════════════════════════════╝')
+            input()
+            print("""
+            \033[1m╠══  \033[1m\033[31mGmail.\033[0;0m
+            \033[1m║    \033[0;0mO gmail pode ser utilizado para diversas coisas, porém, a utilização 
+            \033[1m║    \033[0;0mdele para engenharia social é a mais requisitada. Imagine que seu chefe
+            \033[1m║    \033[0;0mlhe envia um email dizendo que esqueceu a senha do FTP, e te pergunta
+            \033[1m║    \033[0;0mqual é a senha, você, achando que é realmente seu chefe, informa os dados
+            \033[1m║    \033[0;0mperguntados e nem desconfia. Podemos utilizar também para enviar malware.
+            \033[1m║    \033[0;0mA utilização é bem simples, requisitando apenas do email que ira atacar e
+            \033[1m║    \033[0;0muma wordlist.
+            \033[1m║    \033[0;0mPara informar o email é do jeito tradicional:
+            \033[1m║    \033[31m   Uso: teste@gmail.com.br\033[0;0m
+            \033[1m║    \033[0;0mO programa ira perguntar se você quer gerar uma wordlist, ou
+            \033[1m║    \033[0;0mse quer usar uma wordlist já existente, em ambos os casos, o
+            \033[1m║    \033[0;0mprograma ira pedir para informar o local/nome onde a wordlist
+            \033[1m║    \033[0;0mestá localizada.
+            \033[1m║    \033[31m    Uso: /home/user/Documentos/wordlist.txt\033[0;0m
+            \033[1m║    \033[0;0mApós isso, o programa já irá fazer o processo para tentar 
+            \033[1m║    \033[0;0mdescobrir a senha do GMAIL.
+            \033[1m║    \033[0;0m\n""")
+            print('    ╔═════════════════════════════════════════════════════════════════════════╗')
+            print('    ║ Aperte CRTL+C para sair da ajuda             Aperte ENTER para ler mais ║')
+            print('    ╚═════════════════════════════════════════════════════════════════════════╝')
+            input()
+            print("""
+            \033[1m╠══  \033[1m\033[31mSubdominio.\033[0;0m
+            \033[1m║    \033[0;0mUm site pode ter diversos subdominios, na hora de procurarmos
+            \033[1m║    \033[0;0mvulnerabilidades, o dominio principal pode não conter uma vulnerabilidade,
+            \033[1m║    \033[0;0mporém, podemos utilizar outros subdominios que tenha. Por isso sempre é
+            \033[1m║    \033[0;0mbom no pentest.
+            \033[1m║    \033[0;0mExemplo de um subdominio:
+            \033[1m║    \033[31m    Ex.: subdominio.site.com.br\033[0;0m
+            \033[1m║    \033[0;0mO uso é bem simples, só informar o dominio e uma wordlist.
+            \033[1m║    \033[0;0mPara informar o dominio do site:
+            \033[1m║    \033[31m   Uso: site.com.br\033[0;0m
+            \033[1m║    \033[0;0mO programa ira perguntar se você quer gerar uma wordlist, ou
+            \033[1m║    \033[0;0mse quer usar uma wordlist já existente, em ambos os casos, o
+            \033[1m║    \033[0;0mprograma ira pedir para informar o local/nome onde a wordlist
+            \033[1m║    \033[0;0mestá localizada.
+            \033[1m║    \033[31m    Uso: /home/user/Documentos/wordlist.txt\033[0;0m
+            \033[1m║    \033[0;0mApós isso, o programa já irá procurar por subdominios no site alvo.
+            \033[1m║    \033[0;0m\n""")
+            print('    ╔═════════════════════════════════════════════════════════════════════════╗')
+            print('    ║ Aperte CRTL+C para sair da ajuda             Aperte ENTER para ler mais ║')
+            print('    ╚═════════════════════════════════════════════════════════════════════════╝')
+            input()
+            print("""
+            \033[1m╠══  \033[1m\033[31mDiretorio.\033[0;0m
+            \033[1m║    \033[0;0mUm site, por ser um computador/servidor, possui diversos diretorios, alguns
+            \033[1m║    \033[0;0mque podem nos informar bastante coisa sobre o sistema operacional utilizado,
+            \033[1m║    \033[0;0mversões de plugins, programas e até senhas.
+            \033[1m║    \033[0;0mO programa procura por diretorios utilizando uma força bruta, requisitando
+            \033[1m║    \033[0;0mcada nome da wordlist junto com o alvo.
+            \033[1m║    \033[31m    Ex: http://site.com.br/wp-content\033[0;0m
+            \033[1m║    \033[0;0mO uso é bem simples, só informar o site alvo e uma wordlist.
+            \033[1m║    \033[0;0mPara informar o dominio do site:
+            \033[1m║    \033[31m   Uso: http://www.site.com.br/\033[0;0m
+            \033[1m║    \033[0;0mÉ importante que se utilize exatamente dessa maneira, pois o programa ira
+            \033[1m║    \033[0;0madicionar as palavras após a "/".
+            \033[1m║    \033[0;0mO programa ira perguntar se você quer gerar uma wordlist, ou
+            \033[1m║    \033[0;0mse quer usar uma wordlist já existente, em ambos os casos, o
+            \033[1m║    \033[0;0mprograma ira pedir para informar o local/nome onde a wordlist
+            \033[1m║    \033[0;0mestá localizada.
+            \033[1m║    \033[31m    Uso: /home/user/Documentos/wordlist.txt\033[0;0m
+            \033[1m║    \033[0;0mApós isso, o programa já irá procurar por diretorios no site alvo.
             \033[1m║    \033[0;0m\n""")
             print('    ╔═════════════════════════════════════════════════════════════════════════╗')
             print('    ║ Aperte CRTL+C para sair da ajuda             Aperte ENTER para ler mais ║')
@@ -703,6 +1480,69 @@ def ajuda():
             input()
             banner()
             print(""" \033[1mMenu de ajuda para usuarios.:\n                                       
+            \033[1m\033[31mCriptografia.\033[0;0m
+            \033[1m║    \033[0;0mUma das coisas mais importante da segurança é a criptografia,
+            \033[1m║    \033[0;0mque é utilizada para controlar a disponibilidade de algo. 
+            \033[1m║    \033[0;0mMuitas criptografias possui um caminho reverso, que nos permite
+            \033[1m║    \033[0;0mdecodificar aquele codigo, porém, algumas não possui, as chamadas
+            \033[1m║    \033[0;0m"Hashs", elas possuem tamanho fixo e não possuem caminho de volta. 
+            \033[1m║    \033[0;0mUnica forma de descobrir a senha é criptografando e verificando se
+            \033[1m║    \033[0;0ma hash que foi gerada é igual a hash que está procurando. Este módulo
+            \033[1m║    \033[0;0mfoi criado pensando na quebra dessas criptografias, que impedem um
+            \033[1m║    \033[0;0mprofissional de saber sobre algo, ou alguma coisa.
+            \033[1m╠══  \033[1m\033[31mHash linux\033[0;0m
+            \033[1m║    \033[0;0mO linux possui uma segurança em que a senha dos usuarios é criptografadas
+            \033[1m║    \033[0;0mutilizando algoritimos hashs, para conseguir a senha, o programa só necessita
+            \033[1m║    \033[0;0mda hash que vai ser descriptografada e uma wordlist.
+            \033[1m║    \033[31m    Uso: $1$CLDZNZCB$PbOINV7W3sMIvlaTsrkLi1\033[0;0m
+            \033[1m║    \033[0;0mO programa ira perguntar se você quer gerar uma wordlist, ou
+            \033[1m║    \033[0;0mse quer usar uma wordlist já existente, em ambos os casos, o
+            \033[1m║    \033[0;0mprograma ira pedir para informar o local/nome onde a wordlist
+            \033[1m║    \033[0;0mestá localizada.
+            \033[1m║    \033[31m    Uso: /home/user/Documentos/wordlist.txt\033[0;0m
+            \033[1m║    \033[0;0mApós isso, o programa já irá procurar a senha equivalente a hash informada.
+            \033[1m║    \033[0;0m\n""")
+            print('    ╔═════════════════════════════════════════════════════════════════════════╗')
+            print('    ║ Aperte CRTL+C para sair da ajuda             Aperte ENTER para ler mais ║')
+            print('    ╚═════════════════════════════════════════════════════════════════════════╝')
+            input()
+            print("""
+            \033[1m╠══  \033[1m\033[31mHashs.\033[0;0m
+            \033[1m║    \033[0;0mTodas hashs a seguir é necessario as mesmas coisas, a hash alvo e
+            \033[1m║    \033[0;0muma wordlist para a quebra da hash, porém existe diversos algoritmos.
+            \033[1m║    \033[31m   1- MD5\033[0;0m
+            \033[1m║    \033[31m    Uso: 63a9f0ea7bb98050796b649e85481845\033[0;0m
+            \033[1m║    \033[31m   2- SHA1\033[0;0m
+            \033[1m║    \033[31m    Uso: dc76e9f0c0006e8f919e0c515c66dbba3982f785\033[0;0m
+            \033[1m║    \033[31m   3- SHA224\033[0;0m
+            \033[1m║    \033[31m    Uso: 871ce144069ea0816545f52f09cd135d1182262c3b235808fa5a3281\033[0;0m
+            \033[1m║    \033[31m   4- SHA256\033[0;0m
+            \033[1m║    \033[31m    Uso: 4813494d137e1631bba301d5acab6e7bb7aa74ce1185d456565ef51d737677b2\033[0;0m
+            \033[1m║    \033[31m   5- SHA384\033[0;0m
+            \033[1m║    \033[31m    Uso: 7ed8c2c790aa83d6c3e404b5368f6832c18d46a0e98b9c7a7a5e3ef823e2c9f0\033[0;0m
+            \033[1m║    \033[31m    ...  e310abbf6f7ea9d9d883ccb64ec2736a\033[0;0m
+            \033[1m║    \033[31m   6- SHA512\033[0;0m
+            \033[1m║    \033[31m    Uso: 99adc231b045331e514a516b4b7680f588e3823213abe901738bc3ad67b2f6fc\033[0;0m
+            \033[1m║    \033[31m    ...  b3c64efb93d18002588d3ccc1a49efbae1ce20cb43df36b38651f11fa75678e8\033[0;0m
+            \033[1m║    \033[0;0m
+            \033[1m╠══  \033[1m\033[31mBase64.\033[0;0m
+            \033[1m║    \033[0;0mBase64 é uma criptografia que possui um caminho de volta, logo, é facil
+            \033[1m║    \033[0;0mdescriptografar, só precisamos do texto criptografado.
+            \033[1m║    \033[0;0mTemos dois tipos de utilizar:
+            \033[1m║    \033[31m   1) Encode\033[0;0m 
+            \033[1m║    \033[31m    Uso: Texto\033[0;0m
+            \033[1m║    \033[0;0mÉ aonde você criptografa um texto.
+            \033[1m║    \033[31m   2) Decode\033[0;0m 
+            \033[1m║    \033[31m    Uso: VGV4dG8=\033[0;0m
+            \033[1m║    \033[0;0mÉ aonde você descriptografa um texto.
+            \033[1m╚════════════════════════════════════════════════════════════════════════\033[0;0m
+            \n""")
+            print('    ╔═════════════════════════════════════════════════════════════════════════╗')
+            print('    ║ Aperte CRTL+C para sair da ajuda             Aperte ENTER para ler mais ║')
+            print('    ╚═════════════════════════════════════════════════════════════════════════╝')
+            input()
+            banner()
+            print(""" \033[1mMenu de ajuda para usuarios.:\n                                       
             \033[1m\033[31mAtualizar o everyuse.\033[0;0m
             \033[1m║    \033[0;0mQuando o desenvolvedor lança mais uma versão do everyuse o
             \033[1m║    \033[0;0mprograma avisa que existe uma atualização a ser feita, dando
@@ -724,6 +1564,7 @@ def ajuda():
         except KeyboardInterrupt:
             sairmenu = True
 
+#Menu INICIAL
 try:
     while sair == False:
         banner()
@@ -732,8 +1573,9 @@ try:
         \033[1m1)\033[0;0m Engenharia social
         \033[1m2)\033[0;0m Scanners
         \033[1m3)\033[0;0m Brute Force
-        \033[1m4)\033[0;0m Atualizar o everyuse."""+ndatl+"""
-        \033[1m5)\033[0;0m Ajuda
+        \033[1m4)\033[0;0m Criptografia
+        \033[1m5)\033[0;0m Atualizar o everyuse."""+ndatl+"""
+        \033[1m6)\033[0;0m Ajuda
         
         \033[1m0)\033[0;0m Sair
         """)
@@ -747,8 +1589,10 @@ try:
         elif opt == '3':
             bruteforce()
         elif opt == '4':
-            atualizacao()
+            criptografia()
         elif opt == '5':
+            atualizacao()
+        elif opt == '6':
             ajuda()
         else:
             continue
