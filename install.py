@@ -34,3 +34,10 @@ else:
                     print(' [*] Arquivo renomeado para everyuse')
             except:
                 print('Algum erro aconteceu!\n Tente usar o comando: git clone https://github.com/r00tinker/everyuse')
+
+print(cminst+'Fazendo update...')
+os.system('sudo apt-get update > /dev/null')
+print(cminst+'Instalando módulos...')
+os.system('sudo apt-get install python3-bs4 > /dev/null')
+os.system('sudo apt-get install python3-requests > /dev/null')
+print(cminst+'Instalação de módulos finalizadas...')
