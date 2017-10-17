@@ -21,7 +21,7 @@ def senhaslinux(senhahash, arq):
         print('\033[32m+\033[0;1m--------------------------\033[32m+\033[0;0m')
 
         for linha in wordlist.readlines():
-            senha = linha.strip().decode()
+            senha = linha.strip().decode('ISO-8859-1')
             hashgerado = crypt.crypt(senha, salt)
             if hashgerado == senhahash:
                 print('» Encontramos a senha:', senha)
@@ -48,7 +48,7 @@ def hashs(senhahash,tipohash, arq):
     print('\033[32m+\033[0;1m--------------------------\033[32m+\033[0;0m')
 
     for linha in wordlist.readlines():
-        senha = linha.strip().decode()
+        senha = linha.strip().decode('ISO-8859-1')
         if tipohash == 'md5':
             hashgerada = hashlib.md5(senha.encode('utf-8')).hexdigest()
         elif tipohash == 'sha1':
@@ -74,7 +74,7 @@ def hashs(senhahash,tipohash, arq):
 def cryptobase64(senhahash, tipo):
     if tipo == 'decode':
         try:
-            senha = base64.b64decode(senhahash.encode()).decode()
+            senha = base64.b64decode(senhahash.encode()).decode('ISO-8859-1')
             print('\033[32m+\033[0;1m--------------------------\033[32m+\033[0;0m')
             print('Base64:', senhahash)
             print('Descriptografado:', senha)
@@ -96,7 +96,7 @@ def cryptobase64(senhahash, tipo):
                 exit(0)
     elif tipo == 'encode':
         try:
-            senha = base64.b64encode(senhahash.encode()).decode()
+            senha = base64.b64encode(senhahash.encode()).decode('ISO-8859-1')
             print('\033[32m+\033[0;1m--------------------------\033[32m+\033[0;0m')
             print('Descriptografado:', senhahash)
             print('Base64:', senha)
