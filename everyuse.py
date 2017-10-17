@@ -121,7 +121,7 @@ if os.path.exists('.tmpup/'):
 #Verificando se possui uma atualização disponivel
 print('[\33[36m*\033[0;0m] Verificando possiveis atualizações.')
 time.sleep(0.5)
-if 'v1.0-10/10' not in verif.text:
+if 'v1.4-16/10' not in verif.text:
     ndatl = '(Versão nova disponivel.)'
 else:
     ndatl = ''
@@ -129,7 +129,7 @@ else:
 #Função para atualizar o programa.
 def atualizacao():
     banner()
-    if 'v1.0-10/10' not in verif.text:
+    if 'v1.4-16/10' not in verif.text:
         print(verif.text)
         print(' Você precisa atualizar o everyuse!')
         sairmenu = False
