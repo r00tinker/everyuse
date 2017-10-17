@@ -151,7 +151,7 @@ def atualizacao():
                 os.system('sudo chmod +x updeve.sh')
                 print(' Abra novamente o everyuse para concluir a atualização.')
                 complett()
-                os.system('./updeve.sh')
+                os.system('sudo ./updeve.sh')
                 exit(0)
             elif sorn.lower() == 'n':
                 sairmenu = True
