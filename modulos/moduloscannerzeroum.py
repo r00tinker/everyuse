@@ -6,7 +6,7 @@
 # Todas as suas ações utilizando o everyuse são responsabilidades SUA.
 
 #Importar as bibliotecas necessarias
-import socket, requests
+import socket, requests, re
 from bs4 import BeautifulSoup
 
 def porta(site, tipo, v):
@@ -136,7 +136,7 @@ def whois(alvo):
     s.connect(("200.160.2.3",43))
     s.send(alvo.encode())
     resp = s.recv(2048)
-    infos = str(resp.decode())
+    infos = str(resp.decode('ISO-8859-1'))
     for linha in infos.splitlines():
         if linha.startswith('%'):
             continue
@@ -179,7 +179,7 @@ def whois(alvo):
 
 def href(alvo, ip):
     try:
-        site = requests.get('http://'+alvo)
+        site = requests.get('http://' + alvo)
     except requests.exceptions.ConnectionError:
         print(' \033[31m\033[1mErro na conexão.\033[0;0m')
         exit()
@@ -204,7 +204,7 @@ def href(alvo, ip):
             if link in urlsencontrada:
                 continue
             else:
-                if link == 'http://'+alvo or link == 'http://'+alvo+'/':
+                if link == 'http://' + alvo or link == 'http://' + alvo + '/':
                     continue
                 else:
                     i += 1
@@ -220,85 +220,26 @@ def href(alvo, ip):
                     continue
             else:
                 continue
-    print('\033[32m\033[1m» Procurando por hrefs nos sites encontrados...\033[0;0m')
-    for siteencontrado in urlsencontrada:
-        try:
-            site = requests.get(siteencontrado)
-            html = BeautifulSoup(site.text, 'lxml')
-            for item in html.find_all('a'):
-                try:
-                    link = item.attrs['href']
-                except:
-                    continue
-
-                if link.startswith('http'):
-                    if link in urlsencontrada:
-                        continue
-                    elif link.startswith('http://www.twitter') or link.startswith('https://www.twitter') or link.startswith('http://twitter') or link.startswith('https://twitter'):
-                        redesocial.append(link)
-                        i += 1
-                        continue
-                    elif link.startswith('http://plus.google') or link.startswith('https://plus.google') or link.startswith('http://plus.google') or link.startswith('https://plus.google'):
-                        redesocial.append(link)
-                        i += 1
-                        continue
-                    elif link.startswith('http://www.facebook') or link.startswith('https://www.facebook') or link.startswith('http://facebook') or link.startswith('https://facebook'):
-                        redesocial.append(link)
-                        i += 1
-                        continue
-                    elif link.startswith('http://www.linkedin') or link.startswith('https://www.linkedin') or link.startswith('http://linkedin') or link.startswith('https://linkedin'):
-                        redesocial.append(link)
-                        i += 1
-                        continue
-                    elif link.startswith('http://www.instagram') or link.startswith('https://www.instagram') or link.startswith('http://instagram') or link.startswith('https://instagram'):
-                        redesocial.append(link)
-                        i += 1
-                        continue
-                    elif link.startswith('http://www.tumblr') or link.startswith('https://www.tumblr') or link.startswith('http://tumblr') or link.startswith('https://tumblr'):
-                        redesocial.append(link)
-                        i += 1
-                        continue
-                    elif link.startswith('http://accounts.google') or link.startswith('https://accounts.google') or link.startswith('http://google') or link.startswith('https://google') or link.startswith('https://www.google') or link.startswith('http://www.google'):
-                        redesocial.append(link)
-                        i += 1
-                        continue
-                    else:
-                        if link == 'http://' + alvo or link == 'http://' + alvo + '/':
-                            continue
-                        else:
-                            i += 1
-                            urlsencontrada2.append(link)
-                else:
-                    if link.endswith('.php') or link.endswith('html') or link.endswith('htm'):
-                        urlformatada = siteencontrado + link
-                        testesite = requests.get(urlformatada)
-                        if testesite.ok == True:
-                            i += 1
-                            urlsencontrada2.append(urlformatada)
-                        else:
-                            continue
-                    else:
-                        continue
-                site.close()
-        except Exception as err:
-            print(err)
     if i == 0:
         print(' Não encontramos nenhum href :c')
     else:
+        ii = 0
         print('\n\033[32m+\033[0;1m--------------------------\033[32m+\033[0;0m')
         print('\033[1m» Scanner finalizado com sucesso...\033[0;0m')
-        print('\033[1m» Encontramos',str(i),'hrefs.\033[0;0m')
+        print('\033[1m» Encontramos', str(i), 'hrefs.\033[0;0m')
         yorn = input('\033[1m» Deseja visualizar apenas hrefs do site informado? [S/n]\033[0;0m')
         print('\033[32m+\033[0;1m--------------------------\033[32m+\033[0;0m\n')
         if yorn.lower() == 's' or yorn.lower() != 'n' and yorn.lower() != 's':
             for url in urlsencontrada:
-                if url.startswith("http://"+alvo) or url.startswith("https://"+alvo):
-                    print('»',url)
+                if url.startswith("http://" + alvo) or url.startswith("https://" + alvo):
+                    ii +=1
+                    print('»', url)
                 else:
                     continue
             for url in urlsencontrada2:
-                if url.startswith("http://"+alvo) or url.startswith("https://"+alvo):
-                    print('»',url)
+                if url.startswith("http://" + alvo) or url.startswith("https://" + alvo):
+                    ii +=1
+                    print('»', url)
                 else:
                     continue
         elif yorn.lower() == 'n':
@@ -308,3 +249,102 @@ def href(alvo, ip):
                 print('»', url)
             for url in redesocial:
                 print('»', url, '[REDE SOCIAL]')
+
+        if ii < 1:
+            print(' \033[31mNão conseguimos encontrar sites exatamente como informado :c\033[0;0m')
+            print(' \033[1mExibindo todos:\033[0;0m\n')
+            for url in urlsencontrada:
+                print('»', url)
+            for url in urlsencontrada2:
+                print('»', url)
+            for url in redesocial:
+                print('»', url, '[REDE SOCIAL]')
+
+def emailsc(alvo, ip):
+    try:
+        site = requests.get('http://' + alvo)
+    except requests.exceptions.ConnectionError:
+        print(' \033[31m\033[1mErro na conexão.\033[0;0m')
+        exit()
+    print('\n\033[32m+\033[0;1m--------------------------\033[32m+\033[0;0m')
+    print('\033[1mIP do alvo:\033[0;0m', ip)
+    print('\033[1mDominio alvo:\033[0;0m', alvo)
+    print('\033[32m+\033[0;1m--------------------------\033[32m+\033[0;0m\n')
+    html = BeautifulSoup(site.text, 'lxml')
+    urlsencontrada = []
+    listaemails = []
+    urlsencontrada.append('http://'+alvo)
+    for item in html.find_all('a'):
+        try:
+            link = item.attrs['href']
+        except:
+            continue
+
+        if link.startswith('http'):
+            if link in urlsencontrada:
+                continue
+            else:
+                urlsencontrada.append(link)
+        else:
+            if link.endswith('.php'):
+                formatando_url = alvo + '/' + link
+                testeSite = requests.get(formatando_url)
+                if testeSite.ok == True:
+                    urlsencontrada.append(formatando_url)
+                else:
+                    continue
+            else:
+                continue
+
+    for i in urlsencontrada:
+        try:
+            req = requests.get(i)
+        except:
+            continue
+        novoemail = list(re.findall(r'[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.[a-z0-9\.-]+', req.text, re.I))
+        for email in novoemail:
+            if not email in listaemails:
+                if email.endswith('.png'):
+                    continue
+                elif email.endswith('.jpg'):
+                    continue
+                else:
+                    print('»',email)
+                    listaemails.append(email)
+            else:
+                continue
+
+def ipinfo(ipz, opt):
+    if opt == '1':
+        req = requests.get('https://api.infoip.io')
+    elif opt == '2' or opt == '3':
+        req = requests.get('https://api.infoip.io/'+ipz)
+    conte = req.text.split(':')
+    ip = conte[1].split('"')
+    if ip[1] == '188.24.183.216':
+        print('\n[!] Algo deu errado! As informações exibidas não são reais.')
+    cs = conte[2].split('"')
+    cl = conte[3].split('"')
+    reg = conte[4].split('"')
+    city = conte[5].split('"')
+    ltd = conte[6].split('"')
+    ltd = ltd[0].split(',')
+    lgd = conte[7].split('"')
+    lgd = lgd[0].split(',')
+    cp = conte[8].split('"')
+    fh = conte[9].split('"')
+    print('\n\033[32m+\033[0;1m------------------------------\033[32m+\033[0;0m')
+    print('\033[1m» IP:\033[0;0m',ip[1])
+    print('\033[1m» Sigla país:\033[0;0m',cs[1])
+    print('\033[1m» País:\033[0;0m',cl[1])
+    print('\033[1m» Região:\033[0;0m',reg[1])
+    print('\033[1m» Cidade:\033[0;0m',city[1])
+    print('\033[1m» Latitude:\033[0;0m',ltd[0])
+    print('\033[1m» Longitude:\033[0;0m',lgd[0])
+    if cp[1] == 'timezone':
+        print('\033[1m» Código postal:\033[0;0m Não encontrado.')
+    else:
+        print('\033[1m» Código postal:\033[0;0m',cp[1])
+    print('\033[1m» Fuso horário:\033[0;0m',fh[1])
+    print('\033[1m» Google Maps:\033[0;0m https://www.google.com.br/maps/place/'+ltd[0]+','+lgd[0])
+    print('\033[32m+\033[0;1m------------------------------\033[32m+\033[0;0m')
