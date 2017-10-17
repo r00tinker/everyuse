@@ -55,8 +55,9 @@ try:
     from modulos import moduloscannerzeroum
     from modulos import modulobruteforcezeroum
     from modulos import modulocriptografiazeroum
-except ImportError:
+except ImportError as err:
     banner()
+    print(err)
     print('Não conseguimos encontrar os módulos necessários para utilizar o programa.')
     exit(0)
 
@@ -79,6 +80,8 @@ cmevem = '\033[1m\033[33meveryuse\033[0;0m/\033[1m\033[33mengsocial\033[0;0m/\03
 cmptsc = '\033[1m\033[33meveryuse\033[0;0m/\033[1m\033[33mscanners\033[0;0m/\033[1m\033[33mportscan\033[0;0m» '
 cmwhois = '\033[1m\033[33meveryuse\033[0;0m/\033[1m\033[33mscanners\033[0;0m/\033[1m\033[33mwhois\033[0;0m» '
 cmhref = '\033[1m\033[33meveryuse\033[0;0m/\033[1m\033[33mscanners\033[0;0m/\033[1m\033[33mhrefscan\033[0;0m» '
+cmemail = '\033[1m\033[33meveryuse\033[0;0m/\033[1m\033[33mscanners\033[0;0m/\033[1m\033[33memail\033[0;0m» '
+cmipinf = '\033[1m\033[33meveryuse\033[0;0m/\033[1m\033[33mscanners\033[0;0m/\033[1m\033[33mipinfo\033[0;0m» '
 cmwl = '\033[1m\033[33meveryuse\033[0;0m/\033[1m\033[33mbruteforce\033[0;0m/\033[1m\033[33mwordlist\033[0;0m» '
 cmwlbc = '\033[1m\033[33meveryuse\033[0;0m/\033[1m\033[33mbruteforce\033[0;0m/\033[1m\033[33mwordlist\033[0;0m/\033[1m\033[33mbasica\033[0;0m» '
 cmegsc = '\033[1m\033[33meveryuse\033[0;0m/\033[1m\033[33mengsocial\033[0;0m» '
@@ -290,6 +293,38 @@ def hrefscan():
 #########################################################################################################################
 '''-------------------------------------------------------------------------------------------------------------------'''
 #########################################################################################################################
+#                                                   EMAIL SCAN                                                          #
+#########################################################################################################################
+def emailscan():
+    sairmenu = False
+    while sairmenu == False:
+        try:
+            print(' Ex.: www.site.com.br')
+            alvo = input(cmemail + 'Alvo: ')
+            try:
+                ip = socket.gethostbyname(alvo)
+            except:
+                continue
+            try:
+                moduloscannerzeroum.emailsc(alvo, ip)
+            except KeyboardInterrupt:
+                continue
+            except UnboundLocalError:
+                continue
+            except EOFError:
+                sairprograma()
+            complett()
+            sairmenu = True
+        except KeyboardInterrupt:
+            sairmenu = True
+            complett()
+        except EOFError:
+            sairprograma()
+#########################################################################################################################
+#                                                   EMAIL SCAN                                                          #
+#########################################################################################################################
+'''-------------------------------------------------------------------------------------------------------------------'''
+#########################################################################################################################
 #                                                  HASH LINUX                                                           #
 #########################################################################################################################
 def hashlinux():
@@ -380,7 +415,7 @@ def hashlinux():
 #########################################################################################################################
 '''-------------------------------------------------------------------------------------------------------------------'''
 #########################################################################################################################
-#                                                  HASHS ALL                                                            #
+#                                                     WHOIS                                                             #
 #########################################################################################################################
 def whoistheserver():
     sairmenu = False
@@ -408,7 +443,7 @@ def whoistheserver():
         except EOFError:
             sairprograma()
 #########################################################################################################################
-#                                                  HASHS ALL                                                            #
+#                                                     WHOIS                                                             #
 #########################################################################################################################
 #########################################################################################################################
 #                                                  HASHS ALL                                                            #
@@ -1066,6 +1101,48 @@ def engenhariasocial():
     except EOFError:
         sairprograma()
 
+#MENU DE IPINFO
+def menuipinfo():
+    sairmenu = False
+    try:
+        while sairmenu == False:
+            banner()
+            print("""  \033[1mSelecione seu servidor:
+
+        \033[1m1)\033[0;0m Meu IP.
+        \033[1m2)\033[0;0m Informe um IP.
+        \033[1m3)\033[0;0m Informe um site.
+
+        \033[1m0)\033[0;0m Voltar
+            """)
+            opt = str(input(cmipinf))
+            if opt == '0':
+                sairmenu = True
+            elif opt == '1':
+                moduloscannerzeroum.ipinfo('0.0.0.0', '1')
+                complett()
+            elif opt == '2':
+                ip = input(cmipinf+'IP: ')
+                moduloscannerzeroum.ipinfo(ip, '2')
+                complett()
+            elif opt == '3':
+                akjdas = False
+                while akjdas == False:
+                    alvo = input(cmipinf+'Site alvo: ')
+                    try:
+                        ip = socket.gethostbyname(alvo)
+                    except:
+                        continue
+                    moduloscannerzeroum.ipinfo(ip, '3')
+                    complett()
+                    akjdas = True
+    except KeyboardInterrupt:
+        sairmenu = True
+    except ValueError:
+        menuipinfo()
+    except EOFError:
+        sairprograma()
+
 #MENU DE SCANNERS
 def scanners():
     print()
@@ -1078,6 +1155,8 @@ def scanners():
         \033[1m1)\033[0;0m Porta
         \033[1m2)\033[0;0m Whois
         \033[1m3)\033[0;0m Hrefs
+        \033[1m4)\033[0;0m IPinfo
+        \033[1m5)\033[0;0m Email
     
         \033[1m0)\033[0;0m Voltar
                 """)
@@ -1090,6 +1169,10 @@ def scanners():
                 whoistheserver()
             elif opt == '3':
                 hrefscan()
+            elif opt == '4':
+                menuipinfo()
+            elif opt == '5':
+                emailscan()
     except KeyboardInterrupt:
         sairmenu = True
     except ValueError:
@@ -1277,71 +1360,114 @@ def ajuda():
             \033[1m║    \033[0;0mtem como foco o levantamento de dados, além de ser a etapa mais
             \033[1m║    \033[0;0mimportante.
             \033[1m╠══  \033[1m\033[31mScanner de porta.\033[0;0m 
-            \033[1m║    \033[0;0mComo qualquer outro módulo do programa, procuramos facilitar o uso
-            \033[1m║    \033[0;0mpara que pessoas sem muito conhecimento, consiga fazer o scanner.
-            \033[1m║    \033[0;0mNele você poderá escolher uma das três opções disponiveis, que são:
-            \033[1m║    \033[31m  1)Portas padrões.\033[0;0m
-            \033[1m║    \033[0;0mEsta opção faz o scanner apenas em portas mais comuns, como
-            \033[1m║    \033[0;0mFTP(21)|Telnet(23)|MySql(3306)|SMTP(25)| entre muitas outras.
-            \033[1m║    \033[0;0mNo total são exatamente 29 portas mais usadas.
-            \033[1m║    \033[0;0mPara usar basta informar o site, sem http.
-            \033[1m║    \033[31m   Uso: www.siteteste.com.br\033[0;0m
-            \033[1m║    \033[0;0mLogo depois, informe a velocidade que deseja fazer o scanner.
-            \033[1m║    \033[0;0mLembrando que quanto mais rapido menos precisão vai ter.
-            \033[1m║    \033[31m  2)Portas especificas.\033[0;0m
-            \033[1m║    \033[0;0mAonde você vai informar exatamente as mesmas coisas, porém, vai ter
-            \033[1m║    \033[0;0mque informar também, as portas que você deseja scannear, separando
-            \033[1m║    \033[0;0m-as por virgulas.
-            \033[1m║    \033[31m   Uso: 21,23,80,443,8080\033[0;0m
-            \033[1m║    \033[31m  3)Alcance de portas.\033[0;0m
-            \033[1m║    \033[0;0mAonde você vai informar exatamente as mesmas coisas, porém, vai ter
-            \033[1m║    \033[0;0mque informar também, uma porta de inicio e uma porta de fim.
-            \033[1m║    \033[0;0mO scanner vai verificar desde a porta de inicio até a porta de fim.
-            \033[1m║    \033[31m   Uso: Inicio: 0\033[0;0m                                          
-            \033[1m║    \033[31m   Uso: Fim: 2000\033[0;0m                                          
-            \033[1m║    \033[0;0m\n""")
+            \033[1m║        \033[0;0mComo qualquer outro módulo do programa, procuramos facilitar o uso
+            \033[1m║        \033[0;0mpara que pessoas sem muito conhecimento, consiga fazer o scanner.
+            \033[1m║        \033[0;0mNele você poderá escolher uma das três opções disponiveis, que são:
+            \033[1m║        \033[31m  1)Portas padrões.\033[0;0m
+            \033[1m║        \033[0;0mEsta opção faz o scanner apenas em portas mais comuns, como
+            \033[1m║        \033[0;0mFTP(21)|Telnet(23)|MySql(3306)|SMTP(25)| entre muitas outras.
+            \033[1m║        \033[0;0mNo total são exatamente 29 portas mais usadas.
+            \033[1m║        \033[0;0mPara usar basta informar o site, sem http.
+            \033[1m║        \033[31m   Uso: www.siteteste.com.br\033[0;0m
+            \033[1m║        \033[0;0mLogo depois, informe a velocidade que deseja fazer o scanner.
+            \033[1m║        \033[0;0mLembrando que quanto mais rapido menos precisão vai ter.
+            \033[1m║        \033[31m  2)Portas especificas.\033[0;0m
+            \033[1m║        \033[0;0mAonde você vai informar exatamente as mesmas coisas, porém, vai ter
+            \033[1m║        \033[0;0mque informar também, as portas que você deseja scannear, separando
+            \033[1m║        \033[0;0m-as por virgulas.
+            \033[1m║        \033[31m   Uso: 21,23,80,443,8080\033[0;0m
+            \033[1m║        \033[31m  3)Alcance de portas.\033[0;0m
+            \033[1m║        \033[0;0mAonde você vai informar exatamente as mesmas coisas, porém, vai ter
+            \033[1m║        \033[0;0mque informar também, uma porta de inicio e uma porta de fim.
+            \033[1m║        \033[0;0mO scanner vai verificar desde a porta de inicio até a porta de fim.
+            \033[1m║        \033[31m   Uso: Inicio: 0\033[0;0m                                          
+            \033[1m║        \033[31m   Uso: Fim: 2000\033[0;0m                                          
+            \033[1m║        \033[0;0m\n""")
             print('    ╔═════════════════════════════════════════════════════════════════════════╗')
             print('    ║ Aperte CRTL+C para sair da ajuda             Aperte ENTER para ler mais ║')
             print('    ╚═════════════════════════════════════════════════════════════════════════╝')
             input()
             print("""
             \033[1m╠══  \033[1m\033[31mWhoIS.\033[0;0m
-            \033[1m║    \033[0;0mO módulo whois, que significa em português: quem é? Foi criado 
-            \033[1m║    \033[0;0mpara pessoas saberem mais sobre o site. Ele retorna diversos
-            \033[1m║    \033[0;0mdados, tais como: CNPJ, DONO, EMAILS, DATA DE CRIAÇÃO...
-            \033[1m║    \033[0;0mUma vez que esses dados podem ajudar o atacante a descobrir
-            \033[1m║    \033[0;0mbastante sobre o seu alvo, foi colocado para não precisar usar
-            \033[1m║    \033[0;0mo whois tradicional, além de formatar melhor o texto e traduzir.
-            \033[1m║    \033[0;0mPara utilizar o módulo, basta acessar o menu scanners/whois e 
-            \033[1m║    \033[0;0mpreencher o campo necessario: o alvo.
-            \033[1m║    \033[31m    Uso: www.site.com.br\033[0;0m
-            \033[1m║    \033[0;0mÉ importante que o site digitado não tenha "/" nem "http://"
-            \033[1m║    \033[31m   Uso errado: https://www.site.com.br/\033[0;0m
-            \033[1m║    \033[0;0mEm poucos segundos ele ira retornar todas as informações
-            \033[1m║    \033[0;0m\n""")
+            \033[1m║        \033[0;0mO módulo whois, que significa em português: quem é? Foi criado 
+            \033[1m║        \033[0;0mpara pessoas saberem mais sobre o site. Ele retorna diversos
+            \033[1m║        \033[0;0mdados, tais como: CNPJ, DONO, EMAILS, DATA DE CRIAÇÃO...
+            \033[1m║        \033[0;0mUma vez que esses dados podem ajudar o atacante a descobrir
+            \033[1m║        \033[0;0mbastante sobre o seu alvo, foi colocado para não precisar usar
+            \033[1m║        \033[0;0mo whois tradicional, além de formatar melhor o texto e traduzir.
+            \033[1m║        \033[0;0mPara utilizar o módulo, basta acessar o menu scanners/whois e 
+            \033[1m║        \033[0;0mpreencher o campo necessario: o alvo.
+            \033[1m║        \033[31m    Uso: www.site.com.br\033[0;0m
+            \033[1m║        \033[0;0mÉ importante que o site digitado não tenha "/" nem "http://"
+            \033[1m║        \033[31m   Uso errado: https://www.site.com.br/\033[0;0m
+            \033[1m║        \033[0;0mEm poucos segundos ele ira retornar todas as informações
+            \033[1m║        \033[0;0m\n""")
             print('    ╔═════════════════════════════════════════════════════════════════════════╗')
             print('    ║ Aperte CRTL+C para sair da ajuda             Aperte ENTER para ler mais ║')
             print('    ╚═════════════════════════════════════════════════════════════════════════╝')
             input()
             print("""
             \033[1m╠══  \033[1m\033[31mHrefs.\033[0;0m
-            \033[1m║    \033[0;0mEste módulo foi criado para automatizar uma tarefa que é importante,
-            \033[1m║    \033[0;0ma capturação de sites que são referenciados por outro.
-            \033[1m║    \033[0;0mExemplo de um href em um html:
-            \033[1m║    \033[31m<a href="http://site.com.br/login.php ...."\033[0;0m
-            \033[1m║    \033[0;0mPensando no estilo da escrita, o programa procura por "a" e logo em
-            \033[1m║    \033[0;0mseguida, procura pelo link indicado pelo "href=".
-            \033[1m║    \033[0;0mVale ressaltar que isso possui alguns problemas, ele não consegue
-            \033[1m║    \033[0;0mcapturar alguns links que estão no site e acaba pegando alguns links
-            \033[1m║    \033[0;0mdo google, facebook, twitter, instagram, etc... que são desnecessarios
-            \033[1m║    \033[0;0mentão após a utilização, ele ira perguntar se você deseja visualizar
-            \033[1m║    \033[0;0mapenas os hrefs que são do site.
-            \033[1m║    \033[0;0mPara utilizar o módulo, basta acessar o menu scanners/hrefs e
-            \033[1m║    \033[0;0mpreencher o campo necessario.
-            \033[1m║    \033[31m   Uso: www.site.com.br\033[0;0m
-            \033[1m║    \033[0;0mÉ importante que o site digitado não tenha "/" nem "http://"
-            \033[1m║    \033[31m   Uso errado: https://www.site.com.br/\033[0;0m
-            \033[1m║    \033[0;0m\n""")
+            \033[1m║        \033[0;0mEste módulo foi criado para automatizar uma tarefa que é importante,
+            \033[1m║        \033[0;0ma capturação de sites que são referenciados por outro.
+            \033[1m║        \033[0;0mExemplo de um href em um html:
+            \033[1m║        \033[31m<a href="http://site.com.br/login.php ...."\033[0;0m
+            \033[1m║        \033[0;0mPensando no estilo da escrita, o programa procura por "a" e logo em
+            \033[1m║        \033[0;0mseguida, procura pelo link indicado pelo "href=".
+            \033[1m║        \033[0;0mVale ressaltar que isso possui alguns problemas, ele não consegue
+            \033[1m║        \033[0;0mcapturar alguns links que estão no site e acaba pegando alguns links
+            \033[1m║        \033[0;0mdo google, facebook, twitter, instagram, etc... que são desnecessarios
+            \033[1m║        \033[0;0mentão após a utilização, ele ira perguntar se você deseja visualizar
+            \033[1m║        \033[0;0mapenas os hrefs que são do site.
+            \033[1m║        \033[0;0mPara utilizar o módulo, basta acessar o menu scanners/hrefs e
+            \033[1m║        \033[0;0mpreencher o campo necessario.
+            \033[1m║        \033[31m   Uso: www.site.com.br\033[0;0m
+            \033[1m║        \033[0;0mÉ importante que o site digitado não tenha "/" nem "http://"
+            \033[1m║        \033[31m   Uso errado: https://www.site.com.br/\033[0;0m
+            \033[1m║        \033[0;0mATENÇÃO! O programa faz uma enorme quantidade de barulho no servidor.
+            \033[1m║        \033[0;0m\n""")
+            print('    ╔═════════════════════════════════════════════════════════════════════════╗')
+            print('    ║ Aperte CRTL+C para sair da ajuda             Aperte ENTER para ler mais ║')
+            print('    ╚═════════════════════════════════════════════════════════════════════════╝')
+            input()
+            print("""
+            \033[1m╠══  \033[1m\033[31mIPinfo.\033[0;0m
+            \033[1m║        \033[0;0mMódulo criado para capturar informações de um determinado IP,
+            \033[1m║        \033[0;0mpodendo ser o seu, de um site ou um IP específico.
+            \033[1m║        \033[0;0mPara utilizar é bem simples, vai aparecer 3 opções:
+            \033[1m║        \033[31m    1) Meu IP.\033[0;0m
+            \033[1m║        \033[0;0mEle ira te informar sobre o seu IP atual, localização dentre outras
+            \033[1m║        \033[0;0mcoisas.
+            \033[1m║        \033[31m    2) Informe um IP.\033[0;0m
+            \033[1m║        \033[0;0mVocê pode informar um IP se você souber.
+            \033[1m║        \033[31m   Uso: 189.172.146.12\033[0;0m
+            \033[1m║        \033[31m    3) Informe um site.\033[0;0m
+            \033[1m║        \033[0;0mSe você não sabe o IP daquele determinado site, deixe que nós
+            \033[1m║        \033[0;0mfacilitamos a sua vida! O programa ira detectar automaticamente
+            \033[1m║        \033[0;0mo IP do site informado e ira capturar as informações.
+            \033[1m║        \033[31m   Uso: www.sitedeteste.com\033[0;0m
+            \033[1m║        \033[0;0mAs informações que o programa ira retornar é:
+            \033[1m║        \033[0;0mIP, Sigla do país, País, Região, Cidade, Latidude, Longitude,
+            \033[1m║        \033[0;0mCódigo postal, fuso horário, Localização no Google Maps.
+            \033[1m║        \033[0;0m\n""")
+            print('    ╔═════════════════════════════════════════════════════════════════════════╗')
+            print('    ║ Aperte CRTL+C para sair da ajuda             Aperte ENTER para ler mais ║')
+            print('    ╚═════════════════════════════════════════════════════════════════════════╝')
+            input()
+            print("""
+            \033[1m╠══  \033[1m\033[31mScanner de email.\033[0;0m
+            \033[1m║        \033[0;0mMódulo criado para capturar emails de um determinado site,
+            \033[1m║        \033[0;0mpodendo retornar diversos resultados, ou até nulos.
+            \033[1m║        \033[0;0mPara utilizar é simples, basta informar o site alvo:
+            \033[1m║        \033[31m   Uso: www.sitedeteste.com.br\033[0;0m
+            \033[1m║        \033[0;0mApós informar o site, o programa ira procurar por emails
+            \033[1m║        \033[0;0minstantaneamente. Vale ressaltar que o programa pode deixar
+            \033[1m║        \033[0;0mpassar alguns emails e pode retornar coisas que não são email.
+            \033[1m║        \033[0;0mATENÇÃO! O programa faz uma enorme quantidade de barulho no
+            \033[1m║        \033[0;0mservidor, já que ele faz uma requisição no site para ver se o
+            \033[1m║        \033[0;0mmesmo possui emails. Recomendamos que utilize um proxy.
+            \033[1m╚════════════════════════════════════════════════════════════════════════\033[0;0m
+            \n""")
             print('    ╔═════════════════════════════════════════════════════════════════════════╗')
             print('    ║ Aperte CRTL+C para sair da ajuda             Aperte ENTER para ler mais ║')
             print('    ╚═════════════════════════════════════════════════════════════════════════╝')
@@ -1354,123 +1480,123 @@ def ajuda():
             \033[1m║    \033[0;0mai entra o brute force, traduzindo pro português, força bruta,
             \033[1m║    \033[0;0monde tenta encontrar algo, através de uma lista de palavras. 
             \033[1m╠══  \033[1m\033[31mFTP.\033[0;0m
-            \033[1m║    \033[0;0mAlguns sites tem a porta FTP(21) aberta, possibilitando um
-            \033[1m║    \033[0;0mataque de força bruta para descobrir a senha do FTP.
-            \033[1m║    \033[0;0mFile Transfer Protocol é um protocolo que permite a
-            \033[1m║    \033[0;0mtransferência de arquivos para um site.
-            \033[1m║    \033[0;0mO uso é bem simples, informe o alvo desejado.
-            \033[1m║    \033[0;0mLembrando que o alvo tem que ter a porta 21 aberta, por isso,
-            \033[1m║    \033[0;0mfaça um levantamento de dados primeiro.
-            \033[1m║    \033[31m   Uso: www.sitedeteste.com\033[0;0m
-            \033[1m║    \033[0;0mDepois informe o possivel usuario do FTP.
-            \033[1m║    \033[31m   Uso: root\033[0;0m
-            \033[1m║    \033[0;0mO programa ira perguntar se você quer gerar uma wordlist, ou
-            \033[1m║    \033[0;0mse quer usar uma wordlist já existente, em ambos os casos, o
-            \033[1m║    \033[0;0mprograma ira pedir para informar o local/nome onde a wordlist
-            \033[1m║    \033[0;0mestá localizada.
-            \033[1m║    \033[31m   Uso: /home/user/Documentos/wordlist.txt\033[0;0m
-            \033[1m║    \033[0;0mApós isso, o programa já irá fazer o processo para tentar 
-            \033[1m║    \033[0;0mdescobrir a senha do FTP.
-            \033[1m║    \033[0;0m\n""")
+            \033[1m║        \033[0;0mAlguns sites tem a porta FTP(21) aberta, possibilitando um
+            \033[1m║        \033[0;0mataque de força bruta para descobrir a senha do FTP.
+            \033[1m║        \033[0;0mFile Transfer Protocol é um protocolo que permite a
+            \033[1m║        \033[0;0mtransferência de arquivos para um site.
+            \033[1m║        \033[0;0mO uso é bem simples, informe o alvo desejado.
+            \033[1m║        \033[0;0mLembrando que o alvo tem que ter a porta 21 aberta, por isso,
+            \033[1m║        \033[0;0mfaça um levantamento de dados primeiro.
+            \033[1m║        \033[31m   Uso: www.sitedeteste.com\033[0;0m
+            \033[1m║        \033[0;0mDepois informe o possivel usuario do FTP.
+            \033[1m║        \033[31m   Uso: root\033[0;0m
+            \033[1m║        \033[0;0mO programa ira perguntar se você quer gerar uma wordlist, ou
+            \033[1m║        \033[0;0mse quer usar uma wordlist já existente, em ambos os casos, o
+            \033[1m║        \033[0;0mprograma ira pedir para informar o local/nome onde a wordlist
+            \033[1m║        \033[0;0mestá localizada.
+            \033[1m║        \033[31m   Uso: /home/user/Documentos/wordlist.txt\033[0;0m
+            \033[1m║        \033[0;0mApós isso, o programa já irá fazer o processo para tentar 
+            \033[1m║        \033[0;0mdescobrir a senha do FTP.
+            \033[1m║        \033[0;0m\n""")
             print('    ╔═════════════════════════════════════════════════════════════════════════╗')
             print('    ║ Aperte CRTL+C para sair da ajuda             Aperte ENTER para ler mais ║')
             print('    ╚═════════════════════════════════════════════════════════════════════════╝')
             input()
             print("""
             \033[1m╠══  \033[1m\033[31mGmail.\033[0;0m
-            \033[1m║    \033[0;0mO gmail pode ser utilizado para diversas coisas, porém, a utilização 
-            \033[1m║    \033[0;0mdele para engenharia social é a mais requisitada. Imagine que seu chefe
-            \033[1m║    \033[0;0mlhe envia um email dizendo que esqueceu a senha do FTP, e te pergunta
-            \033[1m║    \033[0;0mqual é a senha, você, achando que é realmente seu chefe, informa os dados
-            \033[1m║    \033[0;0mperguntados e nem desconfia. Podemos utilizar também para enviar malware.
-            \033[1m║    \033[0;0mA utilização é bem simples, requisitando apenas do email que ira atacar e
-            \033[1m║    \033[0;0muma wordlist.
-            \033[1m║    \033[0;0mPara informar o email é do jeito tradicional:
-            \033[1m║    \033[31m   Uso: teste@gmail.com.br\033[0;0m
-            \033[1m║    \033[0;0mO programa ira perguntar se você quer gerar uma wordlist, ou
-            \033[1m║    \033[0;0mse quer usar uma wordlist já existente, em ambos os casos, o
-            \033[1m║    \033[0;0mprograma ira pedir para informar o local/nome onde a wordlist
-            \033[1m║    \033[0;0mestá localizada.
-            \033[1m║    \033[31m    Uso: /home/user/Documentos/wordlist.txt\033[0;0m
-            \033[1m║    \033[0;0mApós isso, o programa já irá fazer o processo para tentar 
-            \033[1m║    \033[0;0mdescobrir a senha do GMAIL.
-            \033[1m║    \033[0;0m\n""")
+            \033[1m║        \033[0;0mO gmail pode ser utilizado para diversas coisas, porém, a utilização 
+            \033[1m║        \033[0;0mdele para engenharia social é a mais requisitada. Imagine que seu chefe
+            \033[1m║        \033[0;0mlhe envia um email dizendo que esqueceu a senha do FTP, e te pergunta
+            \033[1m║        \033[0;0mqual é a senha, você, achando que é realmente seu chefe, informa os dados
+            \033[1m║        \033[0;0mperguntados e nem desconfia. Podemos utilizar também para enviar malware.
+            \033[1m║        \033[0;0mA utilização é bem simples, requisitando apenas do email que ira atacar e
+            \033[1m║        \033[0;0muma wordlist.
+            \033[1m║        \033[0;0mPara informar o email é do jeito tradicional:
+            \033[1m║        \033[31m   Uso: teste@gmail.com.br\033[0;0m
+            \033[1m║        \033[0;0mO programa ira perguntar se você quer gerar uma wordlist, ou
+            \033[1m║        \033[0;0mse quer usar uma wordlist já existente, em ambos os casos, o
+            \033[1m║        \033[0;0mprograma ira pedir para informar o local/nome onde a wordlist
+            \033[1m║        \033[0;0mestá localizada.
+            \033[1m║        \033[31m    Uso: /home/user/Documentos/wordlist.txt\033[0;0m
+            \033[1m║        \033[0;0mApós isso, o programa já irá fazer o processo para tentar 
+            \033[1m║        \033[0;0mdescobrir a senha do GMAIL.
+            \033[1m║        \033[0;0m\n""")
             print('    ╔═════════════════════════════════════════════════════════════════════════╗')
             print('    ║ Aperte CRTL+C para sair da ajuda             Aperte ENTER para ler mais ║')
             print('    ╚═════════════════════════════════════════════════════════════════════════╝')
             input()
             print("""
             \033[1m╠══  \033[1m\033[31mSubdominio.\033[0;0m
-            \033[1m║    \033[0;0mUm site pode ter diversos subdominios, na hora de procurarmos
-            \033[1m║    \033[0;0mvulnerabilidades, o dominio principal pode não conter uma vulnerabilidade,
-            \033[1m║    \033[0;0mporém, podemos utilizar outros subdominios que tenha. Por isso sempre é
-            \033[1m║    \033[0;0mbom no pentest.
-            \033[1m║    \033[0;0mExemplo de um subdominio:
-            \033[1m║    \033[31m    Ex.: subdominio.site.com.br\033[0;0m
-            \033[1m║    \033[0;0mO uso é bem simples, só informar o dominio e uma wordlist.
-            \033[1m║    \033[0;0mPara informar o dominio do site:
-            \033[1m║    \033[31m   Uso: site.com.br\033[0;0m
-            \033[1m║    \033[0;0mO programa ira perguntar se você quer gerar uma wordlist, ou
-            \033[1m║    \033[0;0mse quer usar uma wordlist já existente, em ambos os casos, o
-            \033[1m║    \033[0;0mprograma ira pedir para informar o local/nome onde a wordlist
-            \033[1m║    \033[0;0mestá localizada.
-            \033[1m║    \033[31m    Uso: /home/user/Documentos/wordlist.txt\033[0;0m
-            \033[1m║    \033[0;0mApós isso, o programa já irá procurar por subdominios no site alvo.
-            \033[1m║    \033[0;0m\n""")
+            \033[1m║        \033[0;0mUm site pode ter diversos subdominios, na hora de procurarmos
+            \033[1m║        \033[0;0mvulnerabilidades, o dominio principal pode não conter uma vulnerabilidade,
+            \033[1m║        \033[0;0mporém, podemos utilizar outros subdominios que tenha. Por isso sempre é
+            \033[1m║        \033[0;0mbom no pentest.
+            \033[1m║        \033[0;0mExemplo de um subdominio:
+            \033[1m║        \033[31m    Ex.: subdominio.site.com.br\033[0;0m
+            \033[1m║        \033[0;0mO uso é bem simples, só informar o dominio e uma wordlist.
+            \033[1m║        \033[0;0mPara informar o dominio do site:
+            \033[1m║        \033[31m   Uso: site.com.br\033[0;0m
+            \033[1m║        \033[0;0mO programa ira perguntar se você quer gerar uma wordlist, ou
+            \033[1m║        \033[0;0mse quer usar uma wordlist já existente, em ambos os casos, o
+            \033[1m║        \033[0;0mprograma ira pedir para informar o local/nome onde a wordlist
+            \033[1m║        \033[0;0mestá localizada.
+            \033[1m║        \033[31m    Uso: /home/user/Documentos/wordlist.txt\033[0;0m
+            \033[1m║        \033[0;0mApós isso, o programa já irá procurar por subdominios no site alvo.
+            \033[1m║        \033[0;0m\n""")
             print('    ╔═════════════════════════════════════════════════════════════════════════╗')
             print('    ║ Aperte CRTL+C para sair da ajuda             Aperte ENTER para ler mais ║')
             print('    ╚═════════════════════════════════════════════════════════════════════════╝')
             input()
             print("""
             \033[1m╠══  \033[1m\033[31mDiretorio.\033[0;0m
-            \033[1m║    \033[0;0mUm site, por ser um computador/servidor, possui diversos diretorios, alguns
-            \033[1m║    \033[0;0mque podem nos informar bastante coisa sobre o sistema operacional utilizado,
-            \033[1m║    \033[0;0mversões de plugins, programas e até senhas.
-            \033[1m║    \033[0;0mO programa procura por diretorios utilizando uma força bruta, requisitando
-            \033[1m║    \033[0;0mcada nome da wordlist junto com o alvo.
-            \033[1m║    \033[31m    Ex: http://site.com.br/wp-content\033[0;0m
-            \033[1m║    \033[0;0mO uso é bem simples, só informar o site alvo e uma wordlist.
-            \033[1m║    \033[0;0mPara informar o dominio do site:
-            \033[1m║    \033[31m   Uso: http://www.site.com.br/\033[0;0m
-            \033[1m║    \033[0;0mÉ importante que se utilize exatamente dessa maneira, pois o programa ira
-            \033[1m║    \033[0;0madicionar as palavras após a "/".
-            \033[1m║    \033[0;0mO programa ira perguntar se você quer gerar uma wordlist, ou
-            \033[1m║    \033[0;0mse quer usar uma wordlist já existente, em ambos os casos, o
-            \033[1m║    \033[0;0mprograma ira pedir para informar o local/nome onde a wordlist
-            \033[1m║    \033[0;0mestá localizada.
-            \033[1m║    \033[31m    Uso: /home/user/Documentos/wordlist.txt\033[0;0m
-            \033[1m║    \033[0;0mApós isso, o programa já irá procurar por diretorios no site alvo.
-            \033[1m║    \033[0;0m\n""")
+            \033[1m║        \033[0;0mUm site, por ser um computador/servidor, possui diversos diretorios, alguns
+            \033[1m║        \033[0;0mque podem nos informar bastante coisa sobre o sistema operacional utilizado,
+            \033[1m║        \033[0;0mversões de plugins, programas e até senhas.
+            \033[1m║        \033[0;0mO programa procura por diretorios utilizando uma força bruta, requisitando
+            \033[1m║        \033[0;0mcada nome da wordlist junto com o alvo.
+            \033[1m║        \033[31m    Ex: http://site.com.br/wp-content\033[0;0m
+            \033[1m║        \033[0;0mO uso é bem simples, só informar o site alvo e uma wordlist.
+            \033[1m║        \033[0;0mPara informar o dominio do site:
+            \033[1m║        \033[31m   Uso: http://www.site.com.br/\033[0;0m
+            \033[1m║        \033[0;0mÉ importante que se utilize exatamente dessa maneira, pois o programa ira
+            \033[1m║        \033[0;0madicionar as palavras após a "/".
+            \033[1m║        \033[0;0mO programa ira perguntar se você quer gerar uma wordlist, ou
+            \033[1m║        \033[0;0mse quer usar uma wordlist já existente, em ambos os casos, o
+            \033[1m║        \033[0;0mprograma ira pedir para informar o local/nome onde a wordlist
+            \033[1m║        \033[0;0mestá localizada.
+            \033[1m║        \033[31m    Uso: /home/user/Documentos/wordlist.txt\033[0;0m
+            \033[1m║        \033[0;0mApós isso, o programa já irá procurar por diretorios no site alvo.
+            \033[1m║        \033[0;0m\n""")
             print('    ╔═════════════════════════════════════════════════════════════════════════╗')
             print('    ║ Aperte CRTL+C para sair da ajuda             Aperte ENTER para ler mais ║')
             print('    ╚═════════════════════════════════════════════════════════════════════════╝')
             input()
             print("""
             \033[1m╠══  \033[1m\033[31mGerador de wordlist.\033[0;0m
-            \033[1m║    \033[0;0mNa hora de executar um brute force precisamos de uma wordlist,
-            \033[1m║    \033[0;0mfoi pensando nisso que desenvolvemos o módulo para gerar elas.
-            \033[1m║    \033[31m   1) Basica\033[0;0m
-            \033[1m║    \033[0;0mA primeira informação que o programa precisa saber é uma
-            \033[1m║    \033[0;0mpalavra que você, talvez, queira adicionar na lista.
-            \033[1m║    \033[31m   Uso: Lucas\033[0;0m
-            \033[1m║    \033[31m   Uso²: \033[0;0m
-            \033[1m║    \033[0;0mPodemos deixar em branco para não utilizar palavras.
-            \033[1m║    \033[0;0mEntão ele irá pedir os caracteres para formar a wordlist,
-            \033[1m║    \033[0;0mcada caracter vai ser utilizado para gerar uma sequencia.
-            \033[1m║    \033[31m   Uso: 123456\033[0;0m
-            \033[1m║    \033[0;0mIsso ira formar uma wordlist numerica.
-            \033[1m║    \033[0;0mO programa irá pedir a quantidade de caracteres, em outras
-            \033[1m║    \033[0;0mpalavras, o tamanho da senha que ele vai formar.
-            \033[1m║    \033[0;0mO programa não conta o tamanho da senha junto com a palavra
-            \033[1m║    \033[0;0madicional, logo se eu colocar 6, ele irá formar uma senha
-            \033[1m║    \033[0;0mcom tamanho de 6 digitos mais o tamanho da palavra adicional.
-            \033[1m║    \033[31m   Uso: 6\033[0;0m
-            \033[1m║    \033[0;0mPor fim o programa vai perguntar o nome que você deseja salvar
-            \033[1m║    \033[0;0ma wordlist.
-            \033[1m║    \033[31m   Uso: numerica.txt\033[0;0m
-            \033[1m║    \033[0;0mO programa irá gerar a wordlist e perguntar se você quer mover
-            \033[1m║    \033[0;0mela para algum diretorio especifico.
-            \033[1m║    \033[31m   Uso: /home/user/Documentos/Wordlists/\033[0;0m
+            \033[1m║        \033[0;0mNa hora de executar um brute force precisamos de uma wordlist,
+            \033[1m║        \033[0;0mfoi pensando nisso que desenvolvemos o módulo para gerar elas.
+            \033[1m║        \033[31m   1) Basica\033[0;0m
+            \033[1m║        \033[0;0mA primeira informação que o programa precisa saber é uma
+            \033[1m║        \033[0;0mpalavra que você, talvez, queira adicionar na lista.
+            \033[1m║        \033[31m   Uso: Lucas\033[0;0m
+            \033[1m║        \033[31m   Uso²: \033[0;0m
+            \033[1m║        \033[0;0mPodemos deixar em branco para não utilizar palavras.
+            \033[1m║        \033[0;0mEntão ele irá pedir os caracteres para formar a wordlist,
+            \033[1m║        \033[0;0mcada caracter vai ser utilizado para gerar uma sequencia.
+            \033[1m║        \033[31m   Uso: 123456\033[0;0m
+            \033[1m║        \033[0;0mIsso ira formar uma wordlist numerica.
+            \033[1m║        \033[0;0mO programa irá pedir a quantidade de caracteres, em outras
+            \033[1m║        \033[0;0mpalavras, o tamanho da senha que ele vai formar.
+            \033[1m║        \033[0;0mO programa não conta o tamanho da senha junto com a palavra
+            \033[1m║        \033[0;0madicional, logo se eu colocar 6, ele irá formar uma senha
+            \033[1m║        \033[0;0mcom tamanho de 6 digitos mais o tamanho da palavra adicional.
+            \033[1m║        \033[31m   Uso: 6\033[0;0m
+            \033[1m║        \033[0;0mPor fim o programa vai perguntar o nome que você deseja salvar
+            \033[1m║        \033[0;0ma wordlist.
+            \033[1m║        \033[31m   Uso: numerica.txt\033[0;0m
+            \033[1m║        \033[0;0mO programa irá gerar a wordlist e perguntar se você quer mover
+            \033[1m║        \033[0;0mela para algum diretorio especifico.
+            \033[1m║        \033[31m   Uso: /home/user/Documentos/Wordlists/\033[0;0m
             \033[1m╚════════════════════════════════════════════════════════════════════════\033[0;0m
             \n""")
             print('    ╔═════════════════════════════════════════════════════════════════════════╗')
@@ -1490,50 +1616,50 @@ def ajuda():
             \033[1m║    \033[0;0mfoi criado pensando na quebra dessas criptografias, que impedem um
             \033[1m║    \033[0;0mprofissional de saber sobre algo, ou alguma coisa.
             \033[1m╠══  \033[1m\033[31mHash linux\033[0;0m
-            \033[1m║    \033[0;0mO linux possui uma segurança em que a senha dos usuarios é criptografadas
-            \033[1m║    \033[0;0mutilizando algoritimos hashs, para conseguir a senha, o programa só necessita
-            \033[1m║    \033[0;0mda hash que vai ser descriptografada e uma wordlist.
-            \033[1m║    \033[31m    Uso: $1$CLDZNZCB$PbOINV7W3sMIvlaTsrkLi1\033[0;0m
-            \033[1m║    \033[0;0mO programa ira perguntar se você quer gerar uma wordlist, ou
-            \033[1m║    \033[0;0mse quer usar uma wordlist já existente, em ambos os casos, o
-            \033[1m║    \033[0;0mprograma ira pedir para informar o local/nome onde a wordlist
-            \033[1m║    \033[0;0mestá localizada.
-            \033[1m║    \033[31m    Uso: /home/user/Documentos/wordlist.txt\033[0;0m
-            \033[1m║    \033[0;0mApós isso, o programa já irá procurar a senha equivalente a hash informada.
-            \033[1m║    \033[0;0m\n""")
+            \033[1m║        \033[0;0mO linux possui uma segurança em que a senha dos usuarios é criptografadas
+            \033[1m║        \033[0;0mutilizando algoritimos hashs, para conseguir a senha, o programa só necessita
+            \033[1m║        \033[0;0mda hash que vai ser descriptografada e uma wordlist.
+            \033[1m║        \033[31m    Uso: $1$CLDZNZCB$PbOINV7W3sMIvlaTsrkLi1\033[0;0m
+            \033[1m║        \033[0;0mO programa ira perguntar se você quer gerar uma wordlist, ou
+            \033[1m║        \033[0;0mse quer usar uma wordlist já existente, em ambos os casos, o
+            \033[1m║        \033[0;0mprograma ira pedir para informar o local/nome onde a wordlist
+            \033[1m║        \033[0;0mestá localizada.
+            \033[1m║        \033[31m    Uso: /home/user/Documentos/wordlist.txt\033[0;0m
+            \033[1m║        \033[0;0mApós isso, o programa já irá procurar a senha equivalente a hash informada.
+            \033[1m║        \033[0;0m\n""")
             print('    ╔═════════════════════════════════════════════════════════════════════════╗')
             print('    ║ Aperte CRTL+C para sair da ajuda             Aperte ENTER para ler mais ║')
             print('    ╚═════════════════════════════════════════════════════════════════════════╝')
             input()
             print("""
             \033[1m╠══  \033[1m\033[31mHashs.\033[0;0m
-            \033[1m║    \033[0;0mTodas hashs a seguir é necessario as mesmas coisas, a hash alvo e
-            \033[1m║    \033[0;0muma wordlist para a quebra da hash, porém existe diversos algoritmos.
-            \033[1m║    \033[31m   1- MD5\033[0;0m
-            \033[1m║    \033[31m    Uso: 63a9f0ea7bb98050796b649e85481845\033[0;0m
-            \033[1m║    \033[31m   2- SHA1\033[0;0m
-            \033[1m║    \033[31m    Uso: dc76e9f0c0006e8f919e0c515c66dbba3982f785\033[0;0m
-            \033[1m║    \033[31m   3- SHA224\033[0;0m
-            \033[1m║    \033[31m    Uso: 871ce144069ea0816545f52f09cd135d1182262c3b235808fa5a3281\033[0;0m
-            \033[1m║    \033[31m   4- SHA256\033[0;0m
-            \033[1m║    \033[31m    Uso: 4813494d137e1631bba301d5acab6e7bb7aa74ce1185d456565ef51d737677b2\033[0;0m
-            \033[1m║    \033[31m   5- SHA384\033[0;0m
-            \033[1m║    \033[31m    Uso: 7ed8c2c790aa83d6c3e404b5368f6832c18d46a0e98b9c7a7a5e3ef823e2c9f0\033[0;0m
-            \033[1m║    \033[31m    ...  e310abbf6f7ea9d9d883ccb64ec2736a\033[0;0m
-            \033[1m║    \033[31m   6- SHA512\033[0;0m
-            \033[1m║    \033[31m    Uso: 99adc231b045331e514a516b4b7680f588e3823213abe901738bc3ad67b2f6fc\033[0;0m
-            \033[1m║    \033[31m    ...  b3c64efb93d18002588d3ccc1a49efbae1ce20cb43df36b38651f11fa75678e8\033[0;0m
-            \033[1m║    \033[0;0m
+            \033[1m║        \033[0;0mTodas hashs a seguir é necessario as mesmas coisas, a hash alvo e
+            \033[1m║        \033[0;0muma wordlist para a quebra da hash, porém existe diversos algoritmos.
+            \033[1m║        \033[31m   1- MD5\033[0;0m
+            \033[1m║        \033[31m    Uso: 63a9f0ea7bb98050796b649e85481845\033[0;0m
+            \033[1m║        \033[31m   2- SHA1\033[0;0m
+            \033[1m║        \033[31m    Uso: dc76e9f0c0006e8f919e0c515c66dbba3982f785\033[0;0m
+            \033[1m║        \033[31m   3- SHA224\033[0;0m
+            \033[1m║        \033[31m    Uso: 871ce144069ea0816545f52f09cd135d1182262c3b235808fa5a3281\033[0;0m
+            \033[1m║        \033[31m   4- SHA256\033[0;0m
+            \033[1m║        \033[31m    Uso: 4813494d137e1631bba301d5acab6e7bb7aa74ce1185d456565ef51d737677b2\033[0;0m
+            \033[1m║        \033[31m   5- SHA384\033[0;0m
+            \033[1m║        \033[31m    Uso: 7ed8c2c790aa83d6c3e404b5368f6832c18d46a0e98b9c7a7a5e3ef823e2c9f0\033[0;0m
+            \033[1m║        \033[31m    ...  e310abbf6f7ea9d9d883ccb64ec2736a\033[0;0m
+            \033[1m║        \033[31m   6- SHA512\033[0;0m
+            \033[1m║        \033[31m    Uso: 99adc231b045331e514a516b4b7680f588e3823213abe901738bc3ad67b2f6fc\033[0;0m
+            \033[1m║        \033[31m    ...  b3c64efb93d18002588d3ccc1a49efbae1ce20cb43df36b38651f11fa75678e8\033[0;0m
+            \033[1m║        \033[0;0m
             \033[1m╠══  \033[1m\033[31mBase64.\033[0;0m
-            \033[1m║    \033[0;0mBase64 é uma criptografia que possui um caminho de volta, logo, é facil
-            \033[1m║    \033[0;0mdescriptografar, só precisamos do texto criptografado.
-            \033[1m║    \033[0;0mTemos dois tipos de utilizar:
-            \033[1m║    \033[31m   1) Encode\033[0;0m 
-            \033[1m║    \033[31m    Uso: Texto\033[0;0m
-            \033[1m║    \033[0;0mÉ aonde você criptografa um texto.
-            \033[1m║    \033[31m   2) Decode\033[0;0m 
-            \033[1m║    \033[31m    Uso: VGV4dG8=\033[0;0m
-            \033[1m║    \033[0;0mÉ aonde você descriptografa um texto.
+            \033[1m║        \033[0;0mBase64 é uma criptografia que possui um caminho de volta, logo, é facil
+            \033[1m║        \033[0;0mdescriptografar, só precisamos do texto criptografado.
+            \033[1m║        \033[0;0mTemos dois tipos de utilizar:
+            \033[1m║        \033[31m   1) Encode\033[0;0m 
+            \033[1m║        \033[31m    Uso: Texto\033[0;0m
+            \033[1m║        \033[0;0mÉ aonde você criptografa um texto.
+            \033[1m║        \033[31m   2) Decode\033[0;0m 
+            \033[1m║        \033[31m    Uso: VGV4dG8=\033[0;0m
+            \033[1m║        \033[0;0mÉ aonde você descriptografa um texto.
             \033[1m╚════════════════════════════════════════════════════════════════════════\033[0;0m
             \n""")
             print('    ╔═════════════════════════════════════════════════════════════════════════╗')
@@ -1543,16 +1669,16 @@ def ajuda():
             banner()
             print(""" \033[1mMenu de ajuda para usuarios.:\n                                       
             \033[1m\033[31mAtualizar o everyuse.\033[0;0m
-            \033[1m║    \033[0;0mQuando o desenvolvedor lança mais uma versão do everyuse o
-            \033[1m║    \033[0;0mprograma avisa que existe uma atualização a ser feita, dando
-            \033[1m║    \033[0;0mconforto e automoção para atualizações, logo você nunca irá
-            \033[1m║    \033[0;0mperder uma versão do everyuse.
-            \033[1m║    \033[0;0mCada versão procuramos melhorar cada vez mais o everyuse, para
-            \033[1m║    \033[0;0mdar segurança e eficiencia em seus pentests.
-            \033[1m║    \033[0;0mEncontrou algum erro, tem dicas ou quer ajudar no desenvolvimento?
-            \033[1m║    \033[0;0mMande um email para:
-            \033[1m║    \033[0;0m         \033[36mlucas.simoni10@gmail.com\033[0;0m
-            \033[1m║    \033[0;0m\033[33m\033[1mA liberdade foi confundida com a democracia.\033[0;0m
+            \033[1m║        \033[0;0mQuando o desenvolvedor lança mais uma versão do everyuse o
+            \033[1m║        \033[0;0mprograma avisa que existe uma atualização a ser feita, dando
+            \033[1m║        \033[0;0mconforto e automoção para atualizações, logo você nunca irá
+            \033[1m║        \033[0;0mperder uma versão do everyuse.
+            \033[1m║        \033[0;0mCada versão procuramos melhorar cada vez mais o everyuse, para
+            \033[1m║        \033[0;0mdar segurança e eficiencia em seus pentests.
+            \033[1m║        \033[0;0mEncontrou algum erro, tem dicas ou quer ajudar no desenvolvimento?
+            \033[1m║        \033[0;0mMande um email para:
+            \033[1m║        \033[0;0m           \033[36mlucas.simoni10@gmail.com\033[0;0m
+            \033[1m║        \033[0;0m\033[33m\033[1m    A liberdade foi confundida com a democracia.\033[0;0m
             \033[1m╚════════════════════════════════════════════════════════════════════════\033[0;0m
             \n""")
             print('    ╔═════════════════════════════════════════════════════════════════════════╗')
