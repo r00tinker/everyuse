@@ -1,5 +1,5 @@
 Codado por: Lucas Simoni <lucas.simoni10@gmail.com>
-Versão que você está utilizando: 1.0-10/10
+Versão que você está utilizando: 1.4-16/10
 Programa com finalidade de aprendizado.
 Todas as suas ações utilizando o everyuse são responsabilidades SUA.
 Para fazer a instalação correta do programa, siga os passos:
