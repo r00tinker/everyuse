@@ -8,10 +8,10 @@ Para fazer a instalação correta do programa, siga os passos:
 2. {Execute o comando:
     # md5sum modulos/* }
 3. {Verifique as hashs para saber se está tudo certo:
-        40ced334c49ebbafe3814b4c0f26674a  modulos/bruteforce.py
-        62bace8b7ff58748f216e6a2f91cfd12  modulos/criptografia.py
-        cda129bbc5860b0c0b4237d49dc523ae  modulos/engsocial.py
-        89abd3e4cdf63b1651697eff2e944828  modulos/scanner.py
+        900d761ec497d9872f73a5a24e020b00  modulobruteforcezeroum.py
+        8cff7e697a07380ee52255f014df7a4e  modulocriptografiazeroum.py
+        cda129bbc5860b0c0b4237d49dc523ae  moduloengsocialzeroum.py
+        eb9ba990cebc3bf301901e90aa478ad6  moduloscannerzeroum.py
    }
 4. {Execute o comando:
     # sudo python3 install.py 
